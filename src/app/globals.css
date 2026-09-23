@@ -1,0 +1,23 @@
+@import "tailwindcss";
+
+:root {
+  --color-primary: #003a70;
+  --color-secondary: #ff8c00;
+  --font-montserrat: var(--font-montserrat), "Montserrat";
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background-color: #ffffff;
+  color: var(--foreground);
+  font-family: var(--font-montserrat);
+  min-height: 100%;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
