@@ -1,23 +1,159 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-montserrat), "Montserrat", system-ui, -apple-system, sans-serif;
+  --font-montserrat: var(--font-montserrat), "Montserrat", system-ui, -apple-system, sans-serif;
+  --color-primary: #003a70;
+  --color-secondary: #ff8c00;
+}
+
 :root {
   --color-primary: #003a70;
   --color-secondary: #ff8c00;
-  --font-montserrat: var(--font-montserrat), "Montserrat";
+  --foreground: #0f172a;
 }
 
-* {
+html {
+  background-color: #ffffff;
+  color: #0f172a;
+  font-family: var(--font-montserrat), system-ui, -apple-system, sans-serif;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
-html,
 body {
   background-color: #ffffff;
-  color: var(--foreground);
-  font-family: var(--font-montserrat);
-  min-height: 100%;
-  overflow-x: hidden;
-  scroll-behavior: smooth;
+  color: #0f172a;
+  font-family: var(--font-montserrat), system-ui, -apple-system, sans-serif;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.gradient-text-orange {
+  background: linear-gradient(135deg, #ff8c00 0%, #ffa726 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-blue {
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+::selection {
+  background-color: #ff8c00;
+  color: #ffffff;
+}
+
+@keyframes jumpOnce {
+  0% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  30% {
+    transform: translateY(-22px) scale(1.1);
+    box-shadow: 0 20px 25px -5px rgba(255, 140, 0, 0.4);
+  }
+  55% {
+    transform: translateY(0) scale(0.95);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+  75% {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 10px 15px -3px rgba(255, 140, 0, 0.25);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.animate-jump {
+  animation: jumpOnce 0.85s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Hide scrollbar across all browsers while retaining smooth scrollability */
+.no-scrollbar::-webkit-scrollbar {
+  display: none !important;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none !important; /* IE and Edge */
+  scrollbar-width: none !important; /* Firefox */
+}
+
+/* ---------- Refer & Earn banner animations ---------- */
+@keyframes referBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes referWave {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-14deg); }
+  75% { transform: rotate(10deg); }
+}
+
+@keyframes referCash {
+  0%, 100% { transform: rotate(0deg) translateY(0); }
+  50% { transform: rotate(3deg) translateY(-4px); }
+}
+
+@keyframes referWallet {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes referCoin {
+  0% { transform: translateY(20px) scale(0.6); opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { transform: translateY(-70px) scale(1); opacity: 0; }
+}
+
+@keyframes referSparkle {
+  0%, 100% { transform: scale(0.6); opacity: 0.3; }
+  50% { transform: scale(1.1); opacity: 1; }
+}
+
+@keyframes referMarquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes referShine {
+  from { transform: translateX(-120%) skewX(-20deg); }
+  to { transform: translateX(320%) skewX(-20deg); }
+}
+
+.refer-bob { animation: referBob 3s ease-in-out infinite; }
+.refer-wave { transform-box: view-box; animation: referWave 1.6s ease-in-out infinite; }
+.refer-cash { transform-box: view-box; animation: referCash 2.4s ease-in-out infinite; }
+.refer-wallet { transform-box: view-box; animation: referWallet 3s ease-in-out infinite; }
+.refer-coin { transform-box: fill-box; transform-origin: center; animation: referCoin 3.3s ease-out infinite; opacity: 0; }
+.refer-sparkle { transform-box: fill-box; transform-origin: center; animation: referSparkle 2s ease-in-out infinite; }
+
+.refer-marquee { animation: referMarquee 22s linear infinite; }
+.refer-marquee-mask:hover .refer-marquee { animation-play-state: paused; }
+.refer-marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 4%, #000 92%, transparent);
+}
+
+.refer-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 30%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  animation: referShine 2.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .refer-bob, .refer-wave, .refer-cash, .refer-wallet, .refer-coin,
+  .refer-sparkle, .refer-marquee, .refer-cta::after { animation: none; }
+  .refer-coin { opacity: 0; }
 }

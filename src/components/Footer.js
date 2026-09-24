@@ -1,0 +1,283 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
+
+export default function Footer() {
+  const quickMenu = [
+    { label: "About Us", href: "#about" },
+    { label: "Residential", href: "#projects" },
+    { label: "Offices", href: "#projects" },
+    { label: "Resale", href: "#projects" },
+    { label: "Videos", href: "#gallery" },
+    { label: "Events", href: "#news" },
+    { label: "News Corner", href: "#news" },
+    { label: "Blogs", href: "#blogs" },
+    { label: "FAQs", href: "#faqs" },
+    { label: "Awards", href: "#awards" },
+    { label: "Careers", href: "#careers", external: true },
+    { label: "Become a Channel Partner", href: "#partner" },
+    { label: "Ajay Gazette", href: "#news", external: true },
+  ];
+
+  const quickLinks = [
+    { label: "Customer Portal", href: "#portal", external: true },
+    { label: "Crisil Rating", href: "#rating" },
+    { label: "Referral", href: "#referral" },
+    { label: "EMI Calculator", href: "#calculator" },
+    { label: "Interior Design", href: "#interiors", external: true },
+    { label: "NRIs", href: "#nri" },
+    { label: "Corporate", href: "#corporate" },
+    { label: "Privacy Policy", href: "#privacy" },
+    { label: "Terms & Conditions", href: "#terms" },
+    { label: "Disclaimer", href: "#disclaimer" },
+    { label: "Public Notices", href: "#notices" },
+  ];
+
+  const investors = [
+    { label: "Investors", href: "#investors" },
+    { label: "Financial Performance", href: "#financials" },
+    { label: "Share Holding Pattern", href: "#shareholding" },
+    { label: "AGM Notice", href: "#agm", external: true },
+    { label: "Annual Report", href: "#report", external: true },
+    { label: "ESG", href: "#esg" },
+    { label: "CSR", href: "#csr" },
+  ];
+
+  return (
+    <div className="w-full relative select-none font-sans">
+      
+      {/* Main Footer Section with Full-Width Video & Uniform Dark Overlay */}
+      <footer className="relative w-full text-white overflow-hidden bg-[#0d0b09]">
+        
+        {/* Full-Width Background Video (Spans 100% of Footer background) */}
+        <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="w-full h-full object-cover object-center opacity-90 filter brightness-105 contrast-[1.02]"
+          >
+            <source src="/videos/vid-001.mp4" type="video/mp4" />
+          </video>
+
+          {/* Smooth, uniform luxury dark overlay across full width for crisp text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0d0b09]/90 via-[#0d0b09]/75 to-[#0d0b09]/60 pointer-events-none" />
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px] pointer-events-none" />
+        </div>
+
+        {/* Main 4-Column Content Container */}
+        <div className="relative z-10 mx-auto max-w-[1520px] px-6 sm:px-10 lg:px-16 pt-16 sm:pt-20 pb-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 lg:gap-8 xl:gap-12">
+            
+            {/* Column 1: Reach Us */}
+            <div className="lg:col-span-2 max-w-sm">
+              <h4 className="text-base sm:text-[17px] font-bold text-[#ff8c00] tracking-wider uppercase font-sans mb-4">
+                Reach Us
+              </h4>
+
+              {/* Corporate Address */}
+              <div className="text-xs text-white/90 leading-relaxed font-sans space-y-1">
+                <p className="font-bold text-white text-xs">Corporate Address:</p>
+                <p className="text-white/80">Ajay Signature Towers,</p>
+                <p className="text-white/80">2nd Avenue, Anna Nagar East,</p>
+                <p className="text-white/80">Chennai - 600102,</p>
+                <p className="text-white/80">Tamil Nadu, India</p>
+              </div>
+
+              {/* Sales Enquiries */}
+              <div className="mt-4 text-xs font-sans">
+                <p className="text-white/70">For sales enquiries:</p>
+                <a
+                  href="tel:18003130080"
+                  className="font-bold text-white tracking-wide hover:text-[#ff8c00] transition-colors"
+                >
+                  1800 313 0080
+                </a>
+              </div>
+
+              {/* Other Enquiries */}
+              <div className="mt-3 text-xs font-sans">
+                <p className="text-white/70">For other enquiries:</p>
+                <a
+                  href="tel:+914426267890"
+                  className="font-bold text-white tracking-wide hover:text-[#ff8c00] transition-colors"
+                >
+                  +91 44 2626 7890
+                </a>
+              </div>
+
+              {/* Email */}
+              <div className="mt-3 text-xs font-sans">
+                <p className="text-white/70">Email:</p>
+                <a
+                  href="mailto:properties@ajayhomesestates.com"
+                  className="font-bold text-white tracking-wide hover:text-[#ff8c00] transition-colors break-all"
+                >
+                  properties@ajayhomesestates.com
+                </a>
+              </div>
+
+              {/* Social Icons Row */}
+              <div className="mt-6 flex items-center gap-4 text-white/90">
+                {/* Facebook */}
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Facebook"
+                  className="hover:text-[#ff8c00] transition-colors p-1"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z" />
+                  </svg>
+                </a>
+
+                {/* Instagram */}
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Instagram"
+                  className="hover:text-[#ff8c00] transition-colors p-1"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689-.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                  </svg>
+                </a>
+
+                {/* X (Twitter) */}
+                <a
+                  href="https://twitter.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="X"
+                  className="hover:text-[#ff8c00] transition-colors p-1"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                </a>
+
+                {/* LinkedIn */}
+                <a
+                  href="https://linkedin.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="LinkedIn"
+                  className="hover:text-[#ff8c00] transition-colors p-1"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                  </svg>
+                </a>
+
+                {/* YouTube */}
+                <a
+                  href="https://youtube.com"
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="YouTube"
+                  className="hover:text-[#ff8c00] transition-colors p-1"
+                >
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            {/* Column 2: Quick Menu */}
+            <div>
+              <h4 className="text-base sm:text-[17px] font-bold text-[#ff8c00] tracking-wider uppercase font-sans mb-4">
+                Quick Menu
+              </h4>
+              <ul className="space-y-2 text-xs font-sans text-white/85">
+                {quickMenu.map((item) => (
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
+                      className="hover:text-[#ff8c00] transition-colors inline-flex items-center gap-1 group py-0.5"
+                    >
+                      <span>{item.label}</span>
+                      {item.external && (
+                        <ArrowUpRight className="w-3 h-3 text-white/60 group-hover:text-[#ff8c00] transition-colors" />
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 3: Quick Links */}
+            <div>
+              <h4 className="text-base sm:text-[17px] font-bold text-[#ff8c00] tracking-wider uppercase font-sans mb-4">
+                Quick Links
+              </h4>
+              <ul className="space-y-2 text-xs font-sans text-white/85">
+                {quickLinks.map((item) => (
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
+                      className="hover:text-[#ff8c00] transition-colors inline-flex items-center gap-1 group py-0.5"
+                    >
+                      <span>{item.label}</span>
+                      {item.external && (
+                        <ArrowUpRight className="w-3 h-3 text-white/60 group-hover:text-[#ff8c00] transition-colors" />
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Column 4: Investors */}
+            <div>
+              <h4 className="text-base sm:text-[17px] font-bold text-[#ff8c00] tracking-wider uppercase font-sans mb-4">
+                Investors
+              </h4>
+              <ul className="space-y-2 text-xs font-sans text-white/85">
+                {investors.map((item) => (
+                  <li key={item.label}>
+                    <Link
+                      href={item.href}
+                      className="hover:text-[#ff8c00] transition-colors inline-flex items-center gap-1 group py-0.5"
+                    >
+                      <span>{item.label}</span>
+                      {item.external && (
+                        <ArrowUpRight className="w-3 h-3 text-white/60 group-hover:text-[#ff8c00] transition-colors" />
+                      )}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+          </div>
+
+          {/* Bottom Copyright Bar matching Prestige */}
+          <div className="mt-16 sm:mt-20 pt-6 border-t border-white/10 text-[11.5px] text-white/65 font-sans">
+            <p>© 2026 Official Website of Ajay Homes &amp; Estates Projects Ltd. | All Rights Reserved.</p>
+          </div>
+        </div>
+
+        {/* 3. Floating Sticky Vertical "Enquire Now" Tab on Right Edge matching Prestige */}
+        <aside aria-label="Enquire Now" className="fixed right-0 top-1/2 -translate-y-1/2 z-30 hidden md:block">
+          <a
+            href="#contact"
+            className="bg-[#ff8c00] hover:bg-[#e07b00] text-white text-[11px] font-bold uppercase tracking-widest py-4 px-2.5 shadow-2xl transition-all flex items-center justify-center cursor-pointer rounded-l-md font-sans border-l border-t border-b border-white/20"
+            style={{
+              writingMode: "vertical-rl",
+              textOrientation: "mixed",
+            }}
+          >
+            Enquire Now
+          </a>
+        </aside>
+
+      </footer>
+    </div>
+  );
+}
+
