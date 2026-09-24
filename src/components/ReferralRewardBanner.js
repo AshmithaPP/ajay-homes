@@ -97,9 +97,10 @@ export default function ReferralRewardBanner() {
         {/* Replica Banner Card - pure white background, reduced height, full width */}
         <div className="relative w-full bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-lg hover:border-slate-300 overflow-hidden flex flex-col lg:flex-row items-center justify-between p-4 sm:p-5 lg:px-8 lg:py-5 gap-5 lg:gap-8 transition-all duration-300">
           
-          {/* Top-Left "App Exclusive" Badge */}
+          {/* Top-Left "App Exclusive" Badge using Brand Primary #003a70 and Secondary #ff8c00 */}
           <div className="absolute top-0 left-0 z-20">
-            <div className="bg-[#24272c] text-[#ffbe1a] text-[11px] sm:text-xs font-bold tracking-wide px-4 py-2 rounded-br-2xl shadow-xs flex items-center gap-1.5 select-text">
+            <div className="bg-[#003a70] text-white text-[11px] sm:text-xs font-bold tracking-wide px-4 py-2 rounded-br-2xl shadow-xs flex items-center gap-1.5 select-text">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#ff8c00]" />
               <span>App Exclusive</span>
             </div>
           </div>
@@ -108,8 +109,8 @@ export default function ReferralRewardBanner() {
           <div className="w-full lg:w-[32%] xl:w-[30%] flex items-center justify-center pt-6 sm:pt-4 lg:pt-0 shrink-0">
             <div className="relative w-[210px] sm:w-[250px] md:w-[280px] lg:w-[300px] h-[190px] sm:h-[220px] md:h-[230px] flex items-center justify-center group">
               
-              {/* Soft warm circular platform glow matching reference */}
-              <div className="absolute inset-x-4 bottom-2 h-14 bg-gradient-to-t from-[#ffd966]/45 via-[#ffe499]/20 to-transparent rounded-full filter blur-lg pointer-events-none" />
+              {/* Soft warm circular platform glow using brand secondary #ff8c00 */}
+              <div className="absolute inset-x-4 bottom-2 h-14 bg-gradient-to-t from-[#ff8c00]/25 via-[#ff8c00]/10 to-transparent rounded-full filter blur-lg pointer-events-none" />
 
               {/* 3D Animated Illustration */}
               <div className="relative w-full h-full transform transition-all duration-500 ease-out group-hover:scale-[1.03] animate-[referralFloat_4s_ease-in-out_infinite]">
@@ -130,7 +131,7 @@ export default function ReferralRewardBanner() {
                   setModalTab("form");
                   setIsModalOpen(true);
                 }}
-                className="absolute -bottom-1 bg-white/95 backdrop-blur-xs border border-amber-200 text-[#003a70] text-[11px] font-bold px-3 py-1 rounded-full shadow-xs hover:bg-amber-50 transition-all flex items-center gap-1.5 cursor-pointer opacity-90 hover:opacity-100"
+                className="absolute -bottom-1 bg-white/95 backdrop-blur-xs border border-[#ff8c00]/30 text-[#003a70] text-[11px] font-bold px-3 py-1 rounded-full shadow-xs hover:bg-orange-50/60 transition-all flex items-center gap-1.5 cursor-pointer opacity-90 hover:opacity-100"
               >
                 <Sparkles className="w-3 h-3 text-[#ff8c00]" />
                 <span className="select-text">Earn ₹50,000 Rewards</span>
@@ -141,10 +142,10 @@ export default function ReferralRewardBanner() {
           {/* Right Column: Content, Running Rewards Marquee & Action CTA */}
           <div className="w-full lg:w-[68%] xl:w-[70%] flex flex-col justify-center text-left min-w-0">
             
-            {/* Two-Line Headline as requested */}
+            {/* Two-Line Headline with Brand Secondary #ff8c00 */}
             <h2 className="text-2xl sm:text-3xl lg:text-[34px] xl:text-[36px] font-extrabold text-[#111827] tracking-tight leading-[1.2] font-sans select-text">
               Refer a friend for{" "}
-              <span className="text-[#f59e0b] font-extrabold">Property Management</span>
+              <span className="text-[#ff8c00] font-extrabold">Property Management</span>
               <br />
               &amp; Earn rewards.
             </h2>
@@ -192,8 +193,8 @@ export default function ReferralRewardBanner() {
                         </div>
                       </div>
 
-                      {/* Golden/Yellow dot separator matching user's screenshot */}
-                      <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#facc15] mx-3 sm:mx-4.5 shrink-0" />
+                      {/* Brand Secondary #ff8c00 dot separator */}
+                      <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-[#ff8c00] mx-3 sm:mx-4.5 shrink-0" />
                     </div>
                   ))}
                 </div>
@@ -201,7 +202,7 @@ export default function ReferralRewardBanner() {
 
             </div>
 
-            {/* CTA Button matching reference */}
+            {/* CTA Button matching brand color pattern: #ff8c00 secondary */}
             <div className="mt-5 flex flex-wrap items-center gap-4">
               <button
                 type="button"
@@ -210,7 +211,7 @@ export default function ReferralRewardBanner() {
                   setModalTab("form");
                   setIsModalOpen(true);
                 }}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#ffc107] hover:bg-[#ffb300] active:scale-[0.98] text-[#111827] text-sm sm:text-[15px] font-bold py-2.5 sm:py-3 px-8 sm:px-10 rounded-xl shadow-xs hover:shadow-md transition-all duration-200 cursor-pointer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#ff8c00] hover:bg-[#e07b00] active:scale-[0.98] text-white text-sm sm:text-[15px] font-bold py-2.5 sm:py-3 px-8 sm:px-10 rounded-xl shadow-md shadow-orange-500/20 hover:shadow-lg hover:shadow-orange-500/30 transition-all duration-200 cursor-pointer"
               >
                 <span>Install App &amp; Start Earning</span>
               </button>
@@ -277,7 +278,7 @@ export default function ReferralRewardBanner() {
             {modalTab === "app" ? (
               /* Mobile App Download Info */
               <div className="py-4 text-center">
-                <div className="w-14 h-14 rounded-2xl bg-amber-50 border border-amber-200 text-[#f59e0b] mx-auto flex items-center justify-center mb-3">
+                <div className="w-14 h-14 rounded-2xl bg-blue-50 border border-blue-200 text-[#003a70] mx-auto flex items-center justify-center mb-3">
                   <Smartphone className="w-7 h-7" />
                 </div>
                 <h3 className="text-lg font-bold text-slate-900 font-sans select-text">
@@ -418,7 +419,7 @@ export default function ReferralRewardBanner() {
                   <div className="pt-3">
                     <button
                       type="submit"
-                      className="w-full bg-[#ffc107] hover:bg-[#ffb300] text-slate-900 text-sm font-bold py-3 px-6 rounded-xl shadow-md transition-all cursor-pointer flex items-center justify-center gap-2"
+                      className="w-full bg-[#ff8c00] hover:bg-[#e07b00] text-white text-sm font-bold py-3 px-6 rounded-xl shadow-md shadow-orange-500/20 transition-all cursor-pointer flex items-center justify-center gap-2"
                     >
                       <span>Submit Referral &amp; Claim Vouchers</span>
                       <Send className="w-4 h-4" />
