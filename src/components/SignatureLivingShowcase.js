@@ -61,13 +61,16 @@ const projectImages = [
   { id: "img-shastri", title: "Shastri Nagar Residency", image: "/assets/img/img-048.jpeg", side: 1, row: 1 },
 ];
 
+// Height of the fixed navbar (running top bar + main bar) on desktop; the pinned stage sits just below it
+const NAV_H = 108;
+
 function FeatureItem({ item, large }) {
   const IconComp = item.icon;
   return (
     <div className={`flex items-center group ${large ? "gap-4" : "gap-3"}`}>
       <div
         className={`flex shrink-0 items-center justify-center rounded-xl bg-[#003a70] border-2 border-[#003a70] ring-4 ring-[#003a70]/10 text-white shadow-md shadow-[#003a70]/25 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:shadow-lg group-hover:shadow-[#003a70]/35 ${
-          large ? "h-12 w-12 2xl:h-14 2xl:w-14" : "h-11 w-11"
+          large ? "h-11 w-11 2xl:h-14 2xl:w-14" : "h-11 w-11"
         }`}
       >
         <IconComp className={large ? "h-5 w-5 2xl:h-6 2xl:w-6" : "h-5 w-5"} />
@@ -80,7 +83,7 @@ function FeatureItem({ item, large }) {
         >
           {item.title}
         </h4>
-        <p className={`text-slate-500 mt-1 font-sans leading-relaxed ${large ? "text-xs 2xl:text-sm" : "text-xs"}`}>
+        <p className={`text-slate-500 mt-1 font-sans leading-normal ${large ? "text-xs 2xl:text-sm" : "text-xs"}`}>
           {item.desc}
         </p>
       </div>
@@ -124,8 +127,8 @@ export default function SignatureLivingShowcase() {
           const rect = containerRef.current.getBoundingClientRect();
           const scrollableDist = containerRef.current.offsetHeight - window.innerHeight;
           if (scrollableDist <= 0) return;
-          // 0 when the section top reaches the viewport top, 1 when the pinned stretch ends
-          setScrollProgress(Math.min(1, Math.max(0, -rect.top / scrollableDist)));
+          // 0 when the section top reaches the navbar, 1 when the pinned stretch ends
+          setScrollProgress(Math.min(1, Math.max(0, (NAV_H - rect.top) / scrollableDist)));
         } else {
           if (!fanRef.current) return;
           const rect = fanRef.current.getBoundingClientRect();
@@ -156,7 +159,10 @@ export default function SignatureLivingShowcase() {
   let gapRatio;
   if (isDesktop) {
     centerW = Math.round(Math.min(390, Math.max(270, vp.h * 0.36, vp.w * 0.17)));
-    centerH = Math.round(Math.min(centerW * 1.42, vp.h - 300));
+    // Room left under the navbar, top padding, heading block and fan margins
+    centerH = Math.round(Math.min(centerW * 1.42, vp.h - 368));
+    // On short laptop screens (e.g. 14" at 150% scaling) keep the card from turning wide and squat
+    centerW = Math.min(centerW, Math.round(centerH / 1.2));
     sideRatio = 0.62;
     gapRatio = 0.09;
   } else {
@@ -167,13 +173,14 @@ export default function SignatureLivingShowcase() {
     sideRatio = 0.56;
     gapRatio = 0.05;
   }
-  const sideW = Math.round(centerW * sideRatio);
-  const sideH = Math.round(sideW * 0.64);
+  const fanY = Math.round(centerH * 0.33);
+  // Side photos shrink when needed so the stacked rows never overlap each other
+  const sideH = Math.round(Math.min(centerW * sideRatio * 0.64, fanY - 14));
+  const sideW = Math.round(sideH / 0.64);
   const sideGap = Math.round(centerW * gapRatio);
   const fanX = centerW / 2 + sideW / 2 + sideGap;
-  const fanY = Math.round(centerH * 0.33);
   const fanWidth = Math.round(2 * (fanX + sideGap + sideW / 2) + (isDesktop ? 24 : 0));
-  const compact = centerW < 200;
+  const compact = !isDesktop && centerW < 200;
 
   // Staggered emergence: photos start behind the central home and expand outward
   const calcCardTransform = (cardIndex, targetX, targetY, targetRotate) => {
@@ -198,12 +205,13 @@ export default function SignatureLivingShowcase() {
       {/* Pinned Viewport Container on Desktop; Natural Flow on Mobile/Tablet */}
       <div
         className={`${
-          isDesktop && !isReducedMotion ? "sticky top-0 h-screen pt-32 justify-start" : "relative py-10 sm:py-14 justify-center"
+          isDesktop && !isReducedMotion ? "sticky pt-6 2xl:pt-8 justify-start" : "relative py-10 sm:py-14 justify-center"
         } w-full flex flex-col items-center overflow-hidden bg-white px-4 sm:px-6 lg:px-10 2xl:px-16`}
+        style={isDesktop && !isReducedMotion ? { top: `${NAV_H}px`, height: `calc(100vh - ${NAV_H}px)` } : undefined}
       >
         <div className="w-full max-w-[1680px] mx-auto">
           {/* Section Header */}
-          <div className="text-center max-w-3xl mx-auto mb-8 2xl:mb-10">
+          <div className="text-center max-w-3xl mx-auto mb-6 2xl:mb-10">
             <h2 className="text-2xl sm:text-3xl lg:text-[32px] 2xl:text-[38px] font-bold text-slate-900 tracking-tight font-sans leading-snug">
               Spaces designed to become your{" "}
               <span className="text-[#ff8c00]">forever home</span>
@@ -224,8 +232,8 @@ export default function SignatureLivingShowcase() {
             {/* Desktop Left 3 Features */}
             {isDesktop && (
               <div
-                className="flex w-[210px] 2xl:w-[250px] min-[1800px]:w-[270px] shrink-0 flex-col justify-between py-4 pl-2 z-30"
-                style={{ height: `${centerH}px` }}
+                className="flex w-[240px] 2xl:w-[260px] min-[1800px]:w-[280px] shrink-0 flex-col justify-evenly pl-2 z-30"
+                style={{ height: `${centerH + 40}px` }}
               >
                 {leftFeatures.map((item) => (
                   <FeatureItem key={item.title} item={item} large />
@@ -340,8 +348,8 @@ export default function SignatureLivingShowcase() {
             {/* Desktop Right 3 Features */}
             {isDesktop && (
               <div
-                className="flex w-[210px] 2xl:w-[250px] min-[1800px]:w-[270px] shrink-0 flex-col justify-between py-4 pr-2 z-30"
-                style={{ height: `${centerH}px` }}
+                className="flex w-[240px] 2xl:w-[260px] min-[1800px]:w-[280px] shrink-0 flex-col justify-evenly pr-2 z-30"
+                style={{ height: `${centerH + 40}px` }}
               >
                 {rightFeatures.map((item) => (
                   <FeatureItem key={item.title} item={item} large />
