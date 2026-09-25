@@ -74,10 +74,48 @@ export default function Navbar() {
     },
   ];
 
+  const journeySteps = [
+    "Bhoomi Pooja",
+    "Approvals",
+    "Foundation",
+    "Structure",
+    "Brickwork & Plastering",
+    "Interiors & Finishing",
+    "Griha Pravesam · House Warming",
+  ];
+
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200 bg-white shadow-sm py-1 transition-all duration-300">
-        <div className="mx-auto flex h-14 sm:h-[4.5rem] max-w-[92rem] items-center justify-between px-4 sm:px-6 lg:px-8">
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200 bg-white shadow-sm transition-all duration-300">
+        {/* Running top bar: Bhoomi Pooja to House Warming journey */}
+        <div className="relative h-9 sm:h-10 overflow-hidden bg-primary text-white" aria-label="From Bhoomi Pooja to House Warming">
+          <div className="topbar-marquee flex h-full w-max items-center">
+            {[0, 1].map((copy) => (
+              <div key={copy} className="flex shrink-0 items-center" aria-hidden={copy === 1}>
+                {[0, 1].map((rep) => (
+                  <div key={rep} className="flex shrink-0 items-center gap-4 sm:gap-5 pr-14 text-xs sm:text-[13px] 2xl:text-sm font-sans font-medium tracking-wide whitespace-nowrap antialiased">
+                    <span className="font-bold uppercase tracking-wider text-secondary">
+                      From Bhoomi Pooja to House Warming
+                    </span>
+                    <span className="h-1.5 w-1.5 rounded-full bg-secondary" />
+                    {journeySteps.map((step, i) => (
+                      <span key={step} className="flex items-center gap-4 sm:gap-5">
+                        <span className={i === journeySteps.length - 1 ? "font-bold text-secondary" : "text-white"}>
+                          {step}
+                        </span>
+                        {i < journeySteps.length - 1 && <ChevronRight className="h-3.5 w-3.5 text-white/60" />}
+                      </span>
+                    ))}
+                    <span className="h-1.5 w-1.5 rounded-full bg-secondary" />
+                    <span className="font-bold text-white">One team, one promise</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div className="mx-auto flex h-14 sm:h-16 max-w-[92rem] items-center justify-between px-4 sm:px-6 lg:px-8 py-0.5 box-content">
           {/* Logo - Official Image on Clean White Navbar */}
           <Link href="/" className="group flex items-center shrink-0">
             <div className="relative flex items-center transition-transform duration-300 group-hover:scale-105">
@@ -138,7 +176,7 @@ export default function Navbar() {
                   onMouseLeave={handleMouseLeave}
                 >
                   <div className="mb-3 border-b border-slate-200 pb-2 px-3 flex items-center justify-between">
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#ff8c00]">
+                    <span className="text-xs font-bold uppercase tracking-wider text-slate-800">
                       Our Core Engineering Services
                     </span>
                     <span className="text-[10px] font-medium text-slate-500">
@@ -148,19 +186,15 @@ export default function Navbar() {
 
                   <div className="grid grid-cols-2 gap-2">
                     {servicesList.map((item, idx) => {
-                      const IconComponent = item.icon;
                       return (
                         <Link
                           key={idx}
                           href={item.href}
                           onClick={() => setServicesDropdownOpen(false)}
-                          className="group flex items-start gap-3 rounded-xl p-2.5 transition-all hover:bg-slate-50 hover:border-slate-200 border border-transparent"
+                          className="group block rounded-xl px-3 py-2.5 transition-all hover:bg-slate-50 hover:border-slate-200 border border-transparent"
                         >
-                          <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[#ff8c00]/10 text-[#ff8c00] group-hover:bg-[#ff8c00] group-hover:text-white transition-colors">
-                            <IconComponent className="h-4 w-4" />
-                          </div>
                           <div>
-                            <div className="text-xs font-bold text-slate-800 group-hover:text-[#ff8c00] transition-colors flex items-center gap-1">
+                            <div className="text-xs font-bold text-slate-800 group-hover:text-slate-950 transition-colors flex items-center gap-1">
                               <span>{item.title}</span>
                               <ChevronRight className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
                             </div>
@@ -202,27 +236,27 @@ export default function Navbar() {
           <div className="hidden items-center gap-3 shrink-0 lg:flex">
             <a
               href="tel:+919840012345"
-              className="whitespace-nowrap group inline-flex items-center gap-2 rounded-full bg-[#ff8c00] px-5 py-2.5 text-xs xl:text-sm font-bold text-white shadow-md shadow-[#ff8c00]/30 transition-all duration-300 hover:bg-[#e07b00] hover:shadow-[#ff8c00]/50 hover:scale-[1.02]"
+              className="whitespace-nowrap group inline-flex items-center gap-1.5 rounded-full bg-[#ff8c00] px-4 py-2 text-xs font-bold text-white shadow-md shadow-[#ff8c00]/30 transition-all duration-300 hover:bg-[#e07b00] hover:shadow-[#ff8c00]/50 hover:scale-[1.02]"
             >
               <span>Get Free Consultation</span>
-              <ArrowUpRight className="h-4 w-4 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              <ArrowUpRight className="h-3.5 w-3.5 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
           </div>
 
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-slate-50 text-slate-800 transition-colors hover:bg-slate-100 lg:hidden"
+            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-slate-50 text-slate-800 transition-colors hover:bg-slate-100 lg:hidden"
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </button>
         </div>
       </header>
 
       {/* Mobile Drawer Overlay */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 flex flex-col bg-white px-6 pt-24 pb-8 overflow-y-auto lg:hidden animate-in fade-in duration-200 text-slate-900">
+        <div className="fixed inset-0 z-40 flex flex-col bg-white px-6 pt-36 pb-8 overflow-y-auto lg:hidden animate-in fade-in duration-200 text-slate-900">
           <div className="flex flex-col gap-2">
             <Link
               href="/"

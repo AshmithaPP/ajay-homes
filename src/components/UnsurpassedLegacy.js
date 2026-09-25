@@ -4,6 +4,44 @@ import { useState, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
+// Card sizes derived from both viewport width and height so the whole
+// composition (year + card + caption) fits on short laptop screens,
+// large desktops (1920×1080) and phones alike.
+const CARD_RATIO = 1.27; // height / width of the portrait cards
+
+function computeDims(vw, vh) {
+  const isMobile = vw < 640;
+
+  let centerW;
+  if (isMobile) centerW = Math.min(270, vw * 0.7);
+  else if (vw < 1024) centerW = 340;
+  else if (vw < 1536) centerW = 400;
+  else if (vw < 2200) centerW = 440;
+  else centerW = 500;
+
+  // Keep the card short enough that title, year, card and caption fit under the navbar
+  const maxH = Math.max(isMobile ? 300 : 320, (vh - 340) / 1.2);
+  let centerH = Math.min(centerW * CARD_RATIO, maxH);
+  centerW = centerH / CARD_RATIO;
+
+  // Side photos are large and sit close to the centre card so the row reads as one composition
+  const sideW = centerW * 0.72;
+  const sideH = centerH * 0.78;
+  const gap = isMobile ? 14 : Math.min(40, vw * 0.022);
+
+  return {
+    isMobile,
+    centerW,
+    centerH,
+    sideW,
+    sideH,
+    slotWidth: centerW / 2 + sideW / 2 + gap,
+    yearSize: Math.round(centerW * 0.28),
+    captionW: Math.min(vw - 32, 448),
+    captionH: isMobile ? 72 : 80,
+  };
+}
+
 export default function UnsurpassedLegacy() {
   const milestones = [
     {
@@ -64,37 +102,30 @@ export default function UnsurpassedLegacy() {
   const [virtualIndex, setVirtualIndex] = useState(total);
   const [isJumping, setIsJumping] = useState(false);
   const [isTransitioning, setIsTransitioning] = useState(false);
-  const [slotWidth, setSlotWidth] = useState(480);
+  const [dims, setDims] = useState(() => computeDims(1440, 900));
   const [touchStartX, setTouchStartX] = useState(null);
+  const { isMobile, slotWidth, centerW, centerH, sideW, sideH, yearSize, captionW, captionH } = dims;
 
   useEffect(() => {
     const updateDimensions = () => {
-      if (window.innerWidth < 640) {
-        setSlotWidth(290);
-      } else if (window.innerWidth < 1024) {
-        setSlotWidth(380);
-      } else {
-        setSlotWidth(460);
-      }
+      setDims(computeDims(window.innerWidth, window.innerHeight));
     };
     updateDimensions();
     window.addEventListener("resize", updateDimensions);
     return () => window.removeEventListener("resize", updateDimensions);
   }, []);
 
-  const slideNext = useCallback(() => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setVirtualIndex((prev) => prev + 1);
-    setTimeout(() => setIsTransitioning(false), 850);
-  }, [isTransitioning]);
-
-  const slidePrev = useCallback(() => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
-    setVirtualIndex((prev) => prev - 1);
-    setTimeout(() => setIsTransitioning(false), 850);
-  }, [isTransitioning]);
+  const slideBy = useCallback(
+    (steps) => {
+      if (isTransitioning) return;
+      setIsTransitioning(true);
+      setVirtualIndex((prev) => prev + steps);
+      setTimeout(() => setIsTransitioning(false), 850);
+    },
+    [isTransitioning]
+  );
+  const slideNext = useCallback(() => slideBy(1), [slideBy]);
+  const slidePrev = useCallback(() => slideBy(-1), [slideBy]);
 
   // Seamless jump to keep virtualIndex within the middle set [total, total * 2 - 1]
   const handleTransitionEnd = () => {
@@ -136,7 +167,7 @@ export default function UnsurpassedLegacy() {
   return (
     <section
       id="unsurpassed-legacy"
-      className="relative w-full bg-white pt-14 sm:pt-20 pb-20 sm:pb-28 text-slate-900 overflow-hidden border-t border-slate-100 select-none"
+      className="relative w-full bg-white pt-14 sm:pt-16 lg:pt-12 pb-16 sm:pb-20 lg:pb-16 text-slate-900 overflow-hidden border-t border-slate-100 select-none"
     >
       {/* Title matching consistent site heading design */}
       <div className="mx-auto max-w-4xl text-center px-4 mb-4 sm:mb-6">
@@ -152,7 +183,10 @@ export default function UnsurpassedLegacy() {
         onTouchEnd={handleTouchEnd}
       >
         {/* Continuous Thin Golden Horizontal Baseline behind all cards */}
-        <div className="absolute top-[67%] sm:top-[69%] left-0 right-0 h-[1px] bg-[#d5bf9f]/75 pointer-events-none z-0" />
+        <div
+          className="absolute left-0 right-0 h-[1px] bg-[#d5bf9f]/75 pointer-events-none z-0"
+          style={{ bottom: `${captionH + (isMobile ? 16 : 24) + sideH * 0.35}px` }}
+        />
 
         {/* Physical GPU-Accelerated Sliding Track with Graceful 850ms Glide */}
         <div
@@ -169,6 +203,10 @@ export default function UnsurpassedLegacy() {
             const isCenter = distance === 0;
             const isLeft = distance === -1;
             const isRight = distance === 1;
+            // Second photo on each side fills the outer edges of wide screens
+            const isOuter = Math.abs(distance) === 2;
+            // Pull outer photos toward the centre so every gap between photos is equal
+            const outerShift = isOuter ? -Math.sign(distance) * ((centerW - sideW) / 2) : 0;
 
             return (
               <div
@@ -187,10 +225,11 @@ export default function UnsurpassedLegacy() {
                   }}
                 >
                   <span
-                    className="font-[100] text-[64px] sm:text-[84px] md:text-[104px] lg:text-[116px] text-[#1c1917] leading-none tracking-tight block font-sans"
+                    className="font-[100] text-[#1c1917] leading-none tracking-tight block font-sans"
                     style={{
                       fontFamily: "var(--font-montserrat), system-ui, sans-serif",
                       fontWeight: 100,
+                      fontSize: `${yearSize}px`,
                     }}
                   >
                     {item.year}
@@ -200,16 +239,20 @@ export default function UnsurpassedLegacy() {
                 {/* The Card Image: Original image as it is (no blur, 100% opacity) */}
                 <div
                   onClick={() => {
-                    if (isLeft) slidePrev();
-                    if (isRight) slideNext();
+                    if (isLeft || isRight || isOuter) slideBy(distance);
                   }}
                   className={`group relative overflow-hidden rounded-[2px] bg-white transition-all duration-700 ${isCenter
-                      ? "w-[270px] sm:w-[350px] md:w-[410px] h-[360px] sm:h-[460px] md:h-[520px] shadow-lg scale-100 z-20 border border-slate-200/90"
+                      ? "shadow-lg z-20 border border-slate-200/90"
                       : isLeft || isRight
-                        ? "w-[160px] sm:w-[210px] md:w-[240px] h-[230px] sm:h-[290px] md:h-[330px] shadow-sm scale-95 opacity-100 z-10 cursor-pointer border border-slate-200/80 hover:scale-[0.98]"
-                        : "w-[150px] h-[220px] opacity-0 pointer-events-none scale-75"
+                        ? "shadow-sm opacity-100 z-10 cursor-pointer border border-slate-200/80 hover:-translate-y-1"
+                        : isOuter
+                          ? "shadow-sm opacity-60 hover:opacity-100 z-10 cursor-pointer border border-slate-200/80"
+                          : "opacity-0 pointer-events-none scale-75"
                     }`}
                   style={{
+                    width: `${isCenter ? centerW : sideW}px`,
+                    height: `${isCenter ? centerH : sideH}px`,
+                    translate: `${outerShift}px 0`,
                     transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
                   }}
                 >
@@ -218,7 +261,7 @@ export default function UnsurpassedLegacy() {
                     src={item.image}
                     alt={item.title}
                     fill
-                    sizes="(max-width: 640px) 270px, (max-width: 1024px) 350px, 410px"
+                    sizes="(max-width: 640px) 270px, 500px"
                     priority={Math.abs(distance) <= 1}
                     className="object-cover"
                   />
@@ -244,11 +287,13 @@ export default function UnsurpassedLegacy() {
 
                 {/* Milestone Caption Centered Below active card */}
                 <div
-                  className={`text-center max-w-sm sm:max-w-md mt-4 sm:mt-6 px-2 transition-all duration-700 min-h-[46px] ${isCenter
+                  className={`shrink-0 text-center mt-4 sm:mt-6 px-2 transition-all duration-700 ${isCenter
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-2 pointer-events-none"
                     }`}
                   style={{
+                    width: `${captionW}px`,
+                    height: `${captionH}px`,
                     transitionTimingFunction: "cubic-bezier(0.16, 1, 0.3, 1)",
                   }}
                 >

@@ -87,12 +87,12 @@ export default function ReferralRewardBanner() {
   return (
     <section
       ref={sectionRef}
-      className={`relative w-full bg-white py-3 sm:py-5 px-2 sm:px-4 lg:px-6 font-sans overflow-hidden transition-all duration-700 ease-out select-text ${
+      className={`relative w-full bg-white pt-10 sm:pt-14 lg:pt-16 2xl:pt-20 pb-10 sm:pb-14 lg:pb-16 2xl:pb-20 px-4 sm:px-6 lg:px-8 font-sans overflow-hidden transition-all duration-700 ease-out select-text ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
       }`}
     >
-      {/* Full width container with small left & right spaces */}
-      <div className="w-full max-w-[98.5%] xl:max-w-[98%] mx-auto">
+      {/* Container width matches the other content sections */}
+      <div className="w-full max-w-7xl 2xl:max-w-[1440px] mx-auto">
 
         {/* Replica Banner Card - pure white background, reduced height, full width */}
         <div className="relative w-full bg-white rounded-2xl sm:rounded-3xl border border-slate-200/90 shadow-sm hover:shadow-lg hover:border-slate-300 overflow-hidden flex flex-col lg:flex-row items-center justify-between p-4 sm:p-5 lg:px-8 lg:py-5 gap-5 lg:gap-8 transition-all duration-300">

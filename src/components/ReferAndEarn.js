@@ -165,15 +165,15 @@ export default function ReferAndEarn() {
   }, []);
 
   return (
-    <section id="referral" ref={sectionRef} className="w-full bg-[#f0f0f0] px-4 py-10 sm:px-6 sm:py-12 lg:px-8">
+    <section id="referral" ref={sectionRef} className="w-full bg-[#f0f0f0] px-4 py-10 sm:px-6 sm:py-12 lg:px-8 2xl:py-16">
       <div
-        className={`relative mx-auto flex max-w-[92rem] flex-col overflow-hidden rounded-2xl bg-white md:flex-row transition-all duration-700 ease-out ${
+        className={`relative mx-auto flex max-w-[92rem] flex-col overflow-hidden rounded-2xl bg-white md:flex-row 2xl:rounded-3xl transition-all duration-700 ease-out ${
           visible ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
         }`}
       >
         {/* Left: animated illustration */}
-        <div className="relative h-[260px] shrink-0 md:h-auto md:min-h-[295px] md:w-[330px]">
-          <div className="absolute -bottom-[150px] -left-[50px] h-[330px] w-[380px] rounded-full bg-gradient-to-b from-[#FFF1BF] to-[#FFFBEA]" />
+        <div className="relative mx-auto h-[240px] w-full max-w-[360px] shrink-0 sm:h-[280px] md:mx-0 md:h-auto md:min-h-[295px] md:w-[300px] md:max-w-none lg:w-[340px] xl:min-h-[330px] xl:w-[380px] 2xl:min-h-[380px] 2xl:w-[440px] min-[1800px]:min-h-[420px] min-[1800px]:w-[500px]">
+          <div className="absolute -bottom-[50%] -left-[15%] h-[110%] w-[115%] rounded-full bg-gradient-to-b from-[#FFF1BF] to-[#FFFBEA]" />
           <div
             className={`absolute inset-x-0 bottom-0 top-3 transition-all duration-1000 delay-200 ease-out ${
               visible ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"
@@ -181,21 +181,21 @@ export default function ReferAndEarn() {
           >
             <ReferIllustration />
           </div>
-          <span className="absolute left-0 top-5 z-10 rounded-r-full bg-[#2b2b2b] py-1.5 pl-5 pr-5 text-lg font-bold text-[#FFD60A]">
+          <span className="absolute left-0 top-4 z-10 rounded-r-full bg-[#2b2b2b] py-1.5 pl-4 pr-5 text-base font-bold sm:top-5 sm:pl-5 sm:text-lg 2xl:py-2 2xl:pl-6 2xl:pr-7 2xl:text-xl text-[#FFD60A]">
             Referral Exclusive
           </span>
         </div>
 
         {/* Right: content */}
-        <div className="flex min-w-0 flex-1 flex-col justify-center px-5 pb-8 pt-4 md:py-7 md:pl-11 md:pr-8">
-          <h2 className="text-xl font-bold leading-snug text-[#2b2b2b] sm:text-2xl">
-            <span className="inline-flex flex-wrap items-baseline gap-x-2">
+        <div className="flex min-w-0 flex-1 flex-col justify-center px-5 pb-8 pt-4 text-center sm:px-8 md:py-7 md:pl-8 md:pr-8 md:text-left lg:pl-11 2xl:py-10 2xl:pl-16 2xl:pr-14">
+          <h2 className="text-xl font-bold leading-snug text-[#2b2b2b] sm:text-2xl 2xl:text-[32px] min-[1800px]:text-4xl">
+            <span className="inline-flex flex-wrap items-baseline justify-center gap-x-2 md:justify-start">
               <span>Refer a friend for</span>
-              <span className="relative inline-block h-[1.35em] w-[19ch] max-w-full overflow-hidden align-bottom text-[26px] sm:text-[30px]">
+              <span className="relative inline-block h-[1.35em] w-[19ch] max-w-full overflow-hidden align-bottom text-[24px] sm:text-[30px] 2xl:text-[40px] min-[1800px]:text-[46px]">
                 {highlightServices.map((service, i) => (
                   <span
                     key={service}
-                    className={`absolute left-0 top-0 whitespace-nowrap bg-gradient-to-b from-[#E9C400] to-[#C9A200] bg-clip-text font-semibold text-transparent transition-all duration-500 ease-out ${
+                    className={`absolute left-0 top-0 w-full whitespace-nowrap text-center md:text-left bg-gradient-to-b from-[#E9C400] to-[#C9A200] bg-clip-text font-semibold text-transparent transition-all duration-500 ease-out ${
                       i === serviceIdx
                         ? "translate-y-0 opacity-100"
                         : i === (serviceIdx - 1 + highlightServices.length) % highlightServices.length
@@ -212,27 +212,27 @@ export default function ReferAndEarn() {
             &amp; Earn rewards.
           </h2>
 
-          <p className="mt-3 text-[13px] text-[#555]">
+          <p className="mt-3 text-[13px] text-[#555] sm:text-sm 2xl:mt-4 2xl:text-base min-[1800px]:text-lg">
             Refer a friend to any of our services &amp; earn rewards you&apos;ll be excited to redeem, only with Ajay
             Homes &amp; Estates.
           </p>
 
           {/* Rewards marquee */}
-          <div className="mt-4 flex items-center gap-2">
-            <span className="shrink-0 text-[13px] text-[#555]">Rewards you&apos;ll love</span>
-            <div className="refer-marquee-mask relative min-w-0 flex-1 overflow-hidden">
+          <div className="mt-5 flex flex-col items-center gap-2 sm:flex-row md:mt-4 2xl:mt-6 2xl:gap-4">
+            <span className="shrink-0 text-[13px] text-[#555] 2xl:text-base min-[1800px]:text-lg">Rewards you&apos;ll love</span>
+            <div className="refer-marquee-mask relative w-full min-w-0 flex-1 overflow-hidden">
               <div className="refer-marquee flex w-max items-center">
                 {[...rewards, ...rewards].map((item, idx) => {
                   const Icon = item.icon;
                   return (
                     <div key={idx} className="flex shrink-0 items-center" aria-hidden={idx >= rewards.length}>
-                      <div className="flex items-center gap-2 pl-2 pr-6">
+                      <div className="flex items-center gap-2 pl-2 pr-6 text-left 2xl:gap-3 2xl:pl-3 2xl:pr-8">
                         <div
-                          className={`flex h-12 w-[60px] items-center justify-center rounded-md bg-gradient-to-br ${item.bg}`}
+                          className={`flex h-12 w-[60px] items-center 2xl:h-14 2xl:w-[72px] min-[1800px]:h-16 min-[1800px]:w-20 justify-center rounded-md bg-gradient-to-br ${item.bg}`}
                         >
-                          <Icon className={`h-5 w-5 ${item.color}`} />
+                          <Icon className={`h-5 w-5 2xl:h-6 2xl:w-6 ${item.color}`} />
                         </div>
-                        <div className="text-[13px] leading-6 text-[#555]">
+                        <div className="text-[13px] leading-6 text-[#555] 2xl:text-[15px] 2xl:leading-7 min-[1800px]:text-base">
                           {item.title}
                           <br />
                           {item.sub}
@@ -248,7 +248,7 @@ export default function ReferAndEarn() {
 
           <Link
             href="#contact"
-            className="refer-cta group relative mt-6 inline-flex h-11 w-full max-w-[373px] items-center justify-center overflow-hidden rounded-md bg-[#FFD60A] text-[13px] font-bold text-[#2b2b2b] transition-colors hover:bg-[#F5C900]"
+            className="refer-cta group relative mx-auto mt-6 inline-flex h-11 w-full max-w-[373px] items-center justify-center overflow-hidden rounded-md bg-[#FFD60A] text-[13px] md:mx-0 2xl:mt-8 2xl:h-14 2xl:max-w-[440px] 2xl:rounded-lg 2xl:text-base font-bold text-[#2b2b2b] transition-colors hover:bg-[#F5C900]"
           >
             <span className="relative z-10">Refer a Friend &amp; Start Earning</span>
           </Link>

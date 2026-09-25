@@ -5,7 +5,9 @@ import SignatureLivingShowcase from "@/components/SignatureLivingShowcase";
 import RealtimeProjects from "@/components/RealtimeProjects";
 import HowWeGotHere from "@/components/HowWeGotHere";
 import UnsurpassedLegacy from "@/components/UnsurpassedLegacy";
+import HappyClients from "@/components/HappyClients";
 import ReferralRewardBanner from "@/components/ReferralRewardBanner";
+import ConsultationPopup from "@/components/ConsultationPopup";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -32,11 +34,17 @@ export default function Home() {
       {/* 6th Section: An Unsurpassed Legacy of Leadership (1996 - 2026) */}
       <UnsurpassedLegacy />
 
+      {/* Happy Clients: customer testimonials mosaic */}
+      <HappyClients />
+
       {/* Refer a Friend & Earn Rewards Banner (Replica of Reference UI) */}
       <ReferralRewardBanner />
 
       {/* Footer */}
       <Footer />
+
+      {/* Free consultation popup: opens once per session after the visitor reaches the footer */}
+      <ConsultationPopup />
     </main>
   );
 }

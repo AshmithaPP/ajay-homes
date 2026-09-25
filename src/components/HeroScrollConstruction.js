@@ -1,150 +1,142 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-import { ArrowUpRight, Phone, Sparkles, Building, Layers } from "lucide-react";
+import { useEffect, useRef, useCallback, useState } from "react";
+import { ArrowUpRight, Phone, ChevronRight, CheckCircle2 } from "lucide-react";
 
-const DESKTOP_FRAMES_COUNT = 127;
-const MOBILE_FRAMES_COUNT = 146;
+const TOTAL_FRAMES = 31;
+// Construction animation completes at 65% of the scroll runway.
+// The remaining 35% (over 110vh of scroll) showcases the finished luxury landmark
+// so the user can comfortably view and admire the completed home before moving to the next section.
+const BUILD_COMPLETION = 0.65;
+
+// 31 Progressive 3D architectural construction frames for Shastri Nagar, Adyar (img79.jpg)
+// Builds from ground excavation -> RCC frame floor-by-floor -> facade louvers & glass -> glowing landmark
+const DESKTOP_FRAMES = Array.from(
+  { length: TOTAL_FRAMES },
+  (_, i) => `/construction-frames/frame_${String(i).padStart(2, "0")}.jpg?v=3d_5`
+);
+
+// Dedicated 9:16 vertical frames for mobile so the 5-story building is tall, centered, and never cropped
+const MOBILE_FRAMES = Array.from(
+  { length: TOTAL_FRAMES },
+  (_, i) => `/construction-frames/mobile_frame_${String(i).padStart(2, "0")}.jpg?v=3d_5`
+);
 
 export default function HeroScrollConstruction() {
   const canvasRef = useRef(null);
   const sectionRef = useRef(null);
   const textContentRef = useRef(null);
   const gradientOverlayRef = useRef(null);
-  const stageBadgeRef = useRef(null);
   const scrollPromptRef = useRef(null);
-
-  const [loadingProgress, setLoadingProgress] = useState(0);
-  const [isFullyLoaded, setIsFullyLoaded] = useState(false);
-  const [currentStageText, setCurrentStageText] = useState("Phase 01 • Site Excavation & Ground Prep");
-  const [scrollPercent, setScrollPercent] = useState(0);
+  const completeBadgeRef = useRef(null);
 
   const imagesRef = useRef([]);
+  const isMobileRef = useRef(false);
   const isRafLocked = useRef(false);
-  const totalFramesRef = useRef(DESKTOP_FRAMES_COUNT);
   const currentProgressRef = useRef(0);
+  const lastRenderedIdxRef = useRef(-1);
+  const [isCompleted, setIsCompleted] = useState(false);
 
-  // Helper to determine active frame count based on viewport width
-  const getIsMobile = useCallback(() => {
-    return typeof window !== "undefined" && window.innerWidth <= 768;
-  }, []);
-
-  // Render a specific frame index onto the canvas (with HD crisp scaling)
-  const renderFrame = useCallback((frameIndex) => {
+  // Render the active frame onto the canvas with crisp full-bleed scaling and roof clearance
+  const renderFrame = useCallback((frameIdx) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d", { alpha: false });
     if (!ctx) return;
 
+    const images = imagesRef.current;
+    if (!images || images.length === 0) return;
+
     // Find requested frame, or closest loaded frame before it
-    let img = imagesRef.current[frameIndex];
+    let img = images[frameIdx];
     if (!img || !img.complete || img.naturalWidth === 0) {
-      for (let i = frameIndex - 1; i >= 0; i--) {
-        if (imagesRef.current[i] && imagesRef.current[i].complete && imagesRef.current[i].naturalWidth > 0) {
-          img = imagesRef.current[i];
+      for (let i = frameIdx - 1; i >= 0; i--) {
+        if (images[i] && images[i].complete && images[i].naturalWidth > 0) {
+          img = images[i];
           break;
         }
       }
     }
     if (!img || !img.complete || img.naturalWidth === 0) {
-      img = imagesRef.current[0];
+      img = images[0];
     }
     if (!img || !img.complete || img.naturalWidth === 0) return;
 
-    const physicalW = canvas.width;
-    const physicalH = canvas.height;
-    if (physicalW === 0 || physicalH === 0) return;
+    const W = canvas.width;
+    const H = canvas.height;
+    if (W === 0 || H === 0) return;
 
-    const imgRatio = img.naturalWidth / img.naturalHeight;
-    const screenRatio = physicalW / physicalH;
+    const imgW = img.naturalWidth;
+    const imgH = img.naturalHeight;
 
-    let drawW, drawH;
-    if (screenRatio > imgRatio) {
-      drawW = physicalW;
-      drawH = physicalW / imgRatio;
+    // Full-bleed cover tailored to device aspect ratio
+    const scale = Math.max(W / imgW, H / imgH);
+    const dw = imgW * scale;
+    const dh = imgH * scale;
+    const ox = (W - dw) / 2.0;
+
+    // Positioning vertically:
+    // Ensure the top rooftop and pergola have ample starry night sky space below the top navbar (approx 80px)
+    let oy;
+    if (W / H >= 1.0) {
+      // On desktop, anchor so that top sky is visible (never pushed offscreen)
+      oy = Math.max((H - dh) * 0.35, 10);
     } else {
-      drawH = physicalH;
-      drawW = physicalH * imgRatio;
+      // On mobile portrait, keep sky natural and top-aligned so roof sits comfortably below navbar
+      oy = Math.max(H - dh, Math.min(0, (H - dh) * 0.15));
     }
 
-    const offsetX = (physicalW - drawW) / 2;
-    const offsetY = (physicalH - drawH) / 2;
-
-    // Direct 1:1 physical pixel map for razor-sharp HD rendering
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.imageSmoothingEnabled = true;
     ctx.imageSmoothingQuality = "high";
 
-    ctx.fillStyle = "#070e1c";
-    ctx.fillRect(0, 0, physicalW, physicalH);
-    ctx.drawImage(img, offsetX, offsetY, drawW, drawH);
+    // Draw solid photorealistic frame (zero ghosting, zero graphic artifacts)
+    ctx.drawImage(img, ox, oy, dw, dh);
+    lastRenderedIdxRef.current = frameIdx;
   }, []);
 
-  // Preload frames
+  // Preload frames based on screen aspect ratio
   useEffect(() => {
-    if (typeof window === "undefined") return;
+    let isCancelled = false;
 
-    const isMobile = getIsMobile();
-    const totalFrames = isMobile ? MOBILE_FRAMES_COUNT : DESKTOP_FRAMES_COUNT;
-    const folder = isMobile ? "/frames-mobile" : "/frames";
-    totalFramesRef.current = totalFrames;
+    const loadFrames = () => {
+      const isMobile = window.innerWidth < 768 || window.innerHeight > window.innerWidth;
+      isMobileRef.current = isMobile;
+      const sources = isMobile ? MOBILE_FRAMES : DESKTOP_FRAMES;
 
-    let loadedCount = 0;
-    const imageElements = [];
+      const loadedImages = sources.map((src, idx) => {
+        const img = new Image();
+        img.onload = () => {
+          if (!isCancelled) {
+            // Render initial frame as soon as frame 0 is ready
+            if (idx === 0 && lastRenderedIdxRef.current === -1) {
+              renderFrame(0);
+            } else {
+              const buildProgress = Math.min(1, currentProgressRef.current / BUILD_COMPLETION);
+              const currentIdx = Math.min(
+                TOTAL_FRAMES - 1,
+                Math.floor(buildProgress * TOTAL_FRAMES)
+              );
+              if (idx === currentIdx) {
+                renderFrame(currentIdx);
+              }
+            }
+          }
+        };
+        img.src = src;
+        return img;
+      });
 
-    // Preload first frame immediately
-    const firstImg = new Image();
-    firstImg.src = `${folder}/frame_0001.jpg`;
-    firstImg.onload = () => {
-      loadedCount++;
-      setLoadingProgress(Math.floor((loadedCount / totalFrames) * 100));
-      renderFrame(0);
-    };
-    imageElements[0] = firstImg;
-
-    // Load remaining frames asynchronously
-    for (let i = 2; i <= totalFrames; i++) {
-      const img = new Image();
-      const paddedIndex = String(i).padStart(4, "0");
-      img.src = `${folder}/frame_${paddedIndex}.jpg`;
-
-      const onFrameLoad = () => {
-        loadedCount++;
-        const pct = Math.floor((loadedCount / totalFrames) * 100);
-        setLoadingProgress(pct);
-
-        // Re-render active scroll frame whenever a new frame finishes loading
-        const activeIdx = Math.min(
-          totalFrames - 1,
-          Math.floor(currentProgressRef.current * totalFrames)
-        );
-        renderFrame(activeIdx);
-
-        if (loadedCount === totalFrames) {
-          setIsFullyLoaded(true);
-        }
-      };
-
-      img.onload = onFrameLoad;
-      img.onerror = onFrameLoad;
-
-      imageElements[i - 1] = img;
-    }
-
-    imagesRef.current = imageElements;
-
-    const handleResizeCheck = () => {
-      const currentMobile = getIsMobile();
-      if (currentMobile !== isMobile) {
-        window.location.reload();
-      }
+      imagesRef.current = loadedImages;
     };
 
-    window.addEventListener("resize", handleResizeCheck);
-    return () => window.removeEventListener("resize", handleResizeCheck);
-  }, [getIsMobile, renderFrame]);
+    loadFrames();
 
-  // Scroll and Resize Handler using Sticky Container + Section Rect calculation
+    return () => {
+      isCancelled = true;
+    };
+  }, [renderFrame]);
+
+  // Window Resize & Scroll Listener with RAF throttling
   useEffect(() => {
     const canvas = canvasRef.current;
     const section = sectionRef.current;
@@ -160,10 +152,30 @@ export default function HeroScrollConstruction() {
       canvas.style.width = `${width}px`;
       canvas.style.height = `${height}px`;
 
-      const framesCount = totalFramesRef.current;
+      // Check if orientation / device profile changed
+      const isMobile = width < 768 || height > width;
+      if (isMobile !== isMobileRef.current) {
+        isMobileRef.current = isMobile;
+        const sources = isMobile ? MOBILE_FRAMES : DESKTOP_FRAMES;
+        imagesRef.current = sources.map((src) => {
+          const img = new Image();
+          img.onload = () => {
+            const buildProgress = Math.min(1, currentProgressRef.current / BUILD_COMPLETION);
+            const currentIdx = Math.min(
+              TOTAL_FRAMES - 1,
+              Math.floor(buildProgress * TOTAL_FRAMES)
+            );
+            renderFrame(currentIdx);
+          };
+          img.src = src;
+          return img;
+        });
+      }
+
+      const buildProgress = Math.min(1, currentProgressRef.current / BUILD_COMPLETION);
       const frameIdx = Math.min(
-        framesCount - 1,
-        Math.floor(currentProgressRef.current * framesCount)
+        TOTAL_FRAMES - 1,
+        Math.floor(buildProgress * TOTAL_FRAMES)
       );
       renderFrame(frameIdx);
     };
@@ -178,54 +190,48 @@ export default function HeroScrollConstruction() {
         const progress = Math.min(1, Math.max(0, -rect.top / Math.max(scrollableDist, 1)));
 
         currentProgressRef.current = progress;
-        setScrollPercent(Math.round(progress * 100));
 
-        const framesCount = totalFramesRef.current;
-        const frameIdx = Math.min(framesCount - 1, Math.floor(progress * framesCount));
+        // Construction builds until BUILD_COMPLETION (65%), then the completed building stays pinned
+        const buildProgress = Math.min(1, progress / BUILD_COMPLETION);
+        const frameIdx = Math.min(
+          TOTAL_FRAMES - 1,
+          Math.floor(buildProgress * TOTAL_FRAMES)
+        );
         renderFrame(frameIdx);
 
-        // Update construction phase text
-        if (progress < 0.15) {
-          setCurrentStageText("Phase 01 • Site Excavation & Ground Prep");
-        } else if (progress < 0.45) {
-          setCurrentStageText("Phase 02 • Reinforced Concrete Columns");
-        } else if (progress < 0.75) {
-          setCurrentStageText("Phase 03 • Multi-Tier Structural Slabs");
-        } else if (progress < 0.9) {
-          setCurrentStageText("Phase 04 • Architectural Envelope & Glazing");
-        } else {
-          setCurrentStageText("Phase 05 • Completed Luxury Landmark");
-        }
+        const completed = progress >= BUILD_COMPLETION;
+        setIsCompleted(completed);
 
-        // 1. Hero text fade-out
+        // 1. Hero text fade-out on scroll
         if (textContentRef.current) {
-          const textOpacity = Math.max(0, 1 - progress / 0.18);
-          const translateY = progress * 140;
+          const textOpacity = Math.max(0, 1 - progress / 0.16);
+          const translateY = progress * 90;
           textContentRef.current.style.opacity = String(textOpacity);
           textContentRef.current.style.transform = `translateY(${translateY}px)`;
+          textContentRef.current.style.pointerEvents = textOpacity < 0.05 ? "none" : "auto";
         }
 
-        // 2. Scroll prompt fade-out
+        // 2. Dark gradient overlay fades out so the building is bright and vivid
+        if (gradientOverlayRef.current) {
+          const gradOpacity = Math.max(0, 1 - progress / 0.14);
+          gradientOverlayRef.current.style.opacity = String(gradOpacity);
+        }
+
+        // 3. Scroll prompt fade-out
         if (scrollPromptRef.current) {
-          const promptOpacity = Math.max(0, 1 - progress / 0.06);
+          const promptOpacity = Math.max(0, 1 - progress / 0.07);
           scrollPromptRef.current.style.opacity = String(promptOpacity);
         }
 
-        // 3. Stage badge visibility (shows during mid scroll)
-        if (stageBadgeRef.current) {
-          if (progress > 0.08 && progress < 0.95) {
-            stageBadgeRef.current.style.opacity = "1";
-            stageBadgeRef.current.style.transform = "translateY(0)";
+        // 4. Completed building showcase pill (shows when complete until next section)
+        if (completeBadgeRef.current) {
+          if (completed) {
+            completeBadgeRef.current.style.opacity = "1";
+            completeBadgeRef.current.style.transform = "translate(-50%, 0)";
           } else {
-            stageBadgeRef.current.style.opacity = "0";
-            stageBadgeRef.current.style.transform = "translateY(12px)";
+            completeBadgeRef.current.style.opacity = "0";
+            completeBadgeRef.current.style.transform = "translate(-50%, 14px)";
           }
-        }
-
-        // 4. Dark gradient overlay opacity
-        if (gradientOverlayRef.current) {
-          const gradOpacity = Math.max(0.3, 1 - progress / 0.25);
-          gradientOverlayRef.current.style.opacity = String(gradOpacity);
         }
 
         isRafLocked.current = false;
@@ -248,90 +254,87 @@ export default function HeroScrollConstruction() {
     <section
       id="hero"
       ref={sectionRef}
-      className="relative w-full bg-[#070e1c]"
-      style={{ height: "500vh" }}
+      className="relative w-full bg-[#070e1c] select-text"
+      style={{ height: "320vh" }}
     >
       {/* Sticky Fullscreen Viewport Container */}
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-[#070e1c]">
-        {/* Canvas for Construction Scrubbing Animation */}
+        {/* Canvas displaying the building evolving from scratch */}
         <canvas
           ref={canvasRef}
           style={{ imageRendering: "-webkit-optimize-contrast" }}
-          className="pointer-events-none absolute inset-0 z-0 h-full w-full object-cover"
+          className="absolute inset-0 z-0 h-full w-full pointer-events-none"
         />
 
-        {/* Ambient Light Soft Gradient Overlays for Clear Building Visibility */}
+        {/* Soft Initial Gradient Overlays (Fades out completely on scroll for pure, bright building view) */}
         <div
           ref={gradientOverlayRef}
-          className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-t from-black/60 via-black/15 to-transparent transition-opacity duration-500"
+          className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent transition-opacity duration-300"
         />
-        <div className="pointer-events-none absolute inset-0 z-0 bg-gradient-to-r from-black/55 via-black/15 to-transparent" />
 
-        {/* Main Hero Content (Compact size, fades out rapidly on scroll) */}
+        {/* Initial Hero Text & CTAs (Fades out smoothly as the user scrolls) */}
         <div
           ref={textContentRef}
           style={{ opacity: 1 }}
-          className="pointer-events-none absolute inset-0 z-10 flex flex-col justify-center px-4 sm:px-8 md:px-16 lg:px-20 transition-transform duration-100 ease-out"
+          className="pointer-events-auto absolute inset-0 z-10 flex flex-col justify-center px-4 sm:px-6 lg:px-8 transition-transform duration-100 ease-out"
         >
-          <div className="mx-auto w-full max-w-6xl">
-
-            {/* Headline (Compact & Sleek) */}
-            <h1 className="text-3xl sm:text-4xl md:text-[44px] font-bold tracking-tight text-white leading-tight max-w-xl font-sans drop-shadow-md">
-              Building tomorrow&#39;s
-              <br />
-              infrastructure,{" "}
+          <div className="mx-auto w-full max-w-[92rem]">
+            {/* Main Headline */}
+            <h1 className="text-[24px] sm:text-[32px] lg:text-[36px] 2xl:text-[42px] font-semibold tracking-tight text-white leading-[1.2] max-w-xl 2xl:max-w-2xl font-sans drop-shadow-lg">
+              Crafting architectural landmarks{" "}
               <span className="gradient-text-orange font-bold">
-                today.
+                from the ground up.
               </span>
             </h1>
 
-            {/* Subtitle (Compact) */}
-            <p className="mt-4 max-w-lg text-xs sm:text-sm md:text-base leading-relaxed text-white/90 font-normal font-sans drop-shadow-sm">
-              From multi-acre residential layouts to bespoke architectural residences,{" "}
+            {/* Subtitle */}
+            <p className="mt-3 sm:mt-4 max-w-lg 2xl:max-w-xl text-xs sm:text-sm 2xl:text-base leading-relaxed text-white/90 font-normal font-sans drop-shadow-sm">
+              Watch Shastri Nagar Manor, Adyar, Chennai evolve from bare ground excavation to completed contemporary luxury landmark.{" "}
               <strong className="text-white font-semibold">Ajay Homes &amp; Estates</strong>{" "}
-              delivers engineering-grade buildings across Chennai &amp; South India.
+              delivers turnkey architectural excellence.
             </p>
 
-            {/* Action Buttons (Compact & Sleek) */}
-            <div className="pointer-events-auto mt-6 flex flex-wrap items-center gap-3">
+            {/* Action Buttons */}
+            <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-3">
               <a
                 href="#projects"
-                className="group inline-flex h-11 sm:h-12 items-center gap-2.5 rounded-full bg-white pl-5 pr-2 text-xs sm:text-sm font-bold text-[#070e1c] shadow-lg shadow-black/40 transition-all duration-300 hover:bg-neutral-100 hover:scale-[1.02]"
+                className="group inline-flex h-10 sm:h-11 items-center gap-2.5 rounded-full bg-[#ff8c00] hover:bg-[#e07b00] active:scale-[0.98] pl-5 pr-2 text-xs sm:text-sm font-bold text-white shadow-lg shadow-orange-500/30 transition-all duration-300 hover:scale-[1.02]"
               >
                 <span>Explore Realtime Projects</span>
-                <span className="grid h-8 w-8 place-items-center rounded-full bg-[#003a70] text-white transition-transform duration-500 group-hover:rotate-45">
-                  <ArrowUpRight className="h-4 w-4 text-[#ff8c00]" />
+                <span className="grid h-7 w-7 place-items-center rounded-full bg-white text-[#003a70] transition-transform duration-500 group-hover:rotate-45">
+                  <ArrowUpRight className="h-4 w-4 text-[#003a70]" />
                 </span>
               </a>
 
               <a
                 href="tel:+919840012345"
-                className="inline-flex h-11 sm:h-12 items-center gap-2.5 rounded-full border border-white/30 bg-black/40 px-5 text-xs sm:text-sm font-semibold text-white backdrop-blur-md transition-all duration-300 hover:border-[#ff8c00] hover:bg-white/10"
+                className="inline-flex h-10 sm:h-11 items-center gap-2.5 rounded-full border border-white/30 bg-black/40 px-5 text-xs sm:text-sm font-semibold text-white backdrop-blur-md transition-all duration-300 hover:border-[#ff8c00] hover:bg-white/10"
               >
                 <Phone className="h-3.5 w-3.5 text-[#ff8c00]" />
                 <span>Call us directly</span>
               </a>
             </div>
 
-            {/* Quick Metrics Strip */}
-            <div className="mt-8 flex flex-wrap items-center gap-6 border-t border-white/15 pt-4 text-white/80">
+            {/* Trust Metrics Strip */}
+            <div className="mt-6 sm:mt-8 w-fit max-w-full flex flex-wrap items-center gap-6 sm:gap-8 border-t border-white/15 pt-4 text-white/80">
               <div>
-                <div className="text-lg sm:text-xl font-bold text-white font-sans">25+</div>
-                <div className="text-[10px] text-white/60 uppercase tracking-wider font-sans">Years Experience</div>
+                <div className="text-base sm:text-xl font-extrabold text-white font-sans">25+</div>
+                <div className="text-[9px] sm:text-[10px] text-white/70 uppercase tracking-wider font-sans">Years Experience</div>
               </div>
               <div className="h-6 w-px bg-white/15 hidden sm:block" />
               <div>
-                <div className="text-lg sm:text-xl font-bold text-white font-sans">150+</div>
-                <div className="text-[10px] text-white/60 uppercase tracking-wider font-sans">Realized Projects</div>
+                <div className="text-base sm:text-xl font-extrabold text-white font-sans">150+</div>
+                <div className="text-[9px] sm:text-[10px] text-white/70 uppercase tracking-wider font-sans">Completed Landmarks</div>
               </div>
               <div className="h-6 w-px bg-white/15 hidden sm:block" />
               <div>
-                <div className="text-lg sm:text-xl font-bold text-[#ff8c00] font-sans">100%</div>
-                <div className="text-[10px] text-white/60 uppercase tracking-wider font-sans">IS-Code Quality</div>
+                <div className="text-base sm:text-xl font-extrabold text-[#ff8c00] font-sans">100%</div>
+                <div className="text-[9px] sm:text-[10px] text-white/70 uppercase tracking-wider font-sans">IS-Code Certified</div>
               </div>
             </div>
           </div>
         </div>
+    
       </div>
     </section>
   );

@@ -157,3 +157,33 @@ body {
   .refer-sparkle, .refer-marquee, .refer-cta::after { animation: none; }
   .refer-coin { opacity: 0; }
 }
+
+/* ---------- Top bar running text (Bhoomi Pooja to House Warming) ---------- */
+@keyframes topbarMarquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+.topbar-marquee {
+  animation: topbarMarquee 70s linear infinite;
+  will-change: transform;
+  backface-visibility: hidden;
+}
+.topbar-marquee:hover { animation-play-state: paused; }
+
+@media (prefers-reduced-motion: reduce) {
+  .topbar-marquee { animation: none; }
+}
+
+/* ---------- Happy Clients: blinking diamond tiles ---------- */
+@keyframes diamondBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.55; }
+}
+
+.diamond-blink { animation: diamondBlink 3.2s ease-in-out infinite; }
+.group:hover .diamond-blink { animation-play-state: paused; opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .diamond-blink { animation: none; }
+}

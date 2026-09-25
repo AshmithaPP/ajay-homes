@@ -113,7 +113,7 @@ export default function HowWeGotHere() {
     <section
       ref={sectionRef}
       id="legacy"
-      className={`relative w-full bg-white py-8 sm:py-12 md:py-16 text-slate-900 overflow-hidden transition-all duration-1000 ease-out ${
+      className={`relative w-full bg-white py-8 sm:py-10 lg:py-12 text-slate-900 overflow-hidden transition-all duration-1000 ease-out ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
     >
@@ -126,7 +126,7 @@ export default function HowWeGotHere() {
         </div>
 
         {/* Main Full-Viewport Showcase Card with Small Left/Right Margin */}
-        <div className="relative w-full h-[78vh] sm:h-[82vh] md:h-[85vh] min-h-[540px] sm:min-h-[600px] max-h-[880px] rounded-2xl sm:rounded-3xl bg-slate-950 overflow-hidden shadow-2xl border border-slate-800/80">
+        <div className="relative w-full h-[clamp(440px,68vh,540px)] sm:h-[clamp(460px,62vh,600px)] lg:h-[clamp(440px,64vh,660px)] rounded-2xl sm:rounded-3xl bg-slate-950 overflow-hidden shadow-2xl border border-slate-800/80">
           
           {/* Architectural Background Images with Smooth Crossfade (Crisp, Bright, High-End) */}
           <div className="absolute inset-0 z-0">
@@ -160,33 +160,33 @@ export default function HowWeGotHere() {
           </div>
 
           {/* Top Pill / Badge inside the card */}
-          <div className="absolute top-5 left-5 sm:top-8 sm:left-8 md:top-10 md:left-12 z-20">
-            <span className="inline-flex items-center gap-2 rounded-full bg-black/40 backdrop-blur-md px-3.5 py-1 text-[11px] sm:text-xs uppercase tracking-widest text-white/85 font-semibold font-sans border border-white/10 shadow-sm">
+          <div className="absolute top-5 left-5 sm:top-7 sm:left-8 md:left-10 lg:left-12 z-20 max-w-[calc(100%-6rem)] sm:max-w-[calc(100%-10rem)]">
+            <span className="inline-flex items-center gap-2 rounded-full bg-black/40 backdrop-blur-md px-3.5 py-1 text-[10px] sm:text-xs uppercase tracking-wider sm:tracking-widest text-white/85 font-semibold font-sans border border-white/10 shadow-sm">
               <span className="h-1.5 w-1.5 rounded-full bg-[#ff8c00] animate-pulse" />
               Ajay Homes &amp; Estates • Architectural Journey
             </span>
           </div>
 
           {/* Bottom-Left Milestone Content matching reference */}
-          <div className="absolute bottom-6 left-5 sm:bottom-10 sm:left-8 md:bottom-12 md:left-12 z-20 max-w-[calc(100%-110px)] sm:max-w-xl md:max-w-2xl lg:max-w-3xl text-left pr-4">
+          <div className="absolute bottom-6 left-5 sm:bottom-8 sm:left-8 md:left-10 lg:bottom-10 lg:left-12 z-20 max-w-[calc(100%-100px)] sm:max-w-[calc(100%-160px)] md:max-w-2xl lg:max-w-3xl text-left pr-4">
             <div className="overflow-hidden">
               <h3
                 key={`title-${activeItem.year}`}
-                className="text-xl sm:text-3xl md:text-4xl lg:text-[42px] font-extrabold text-white tracking-tight leading-snug sm:leading-tight font-sans transition-all duration-500 animate-fadeIn drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]"
+                className="text-xl sm:text-[26px] md:text-[30px] lg:text-[34px] 2xl:text-[40px] font-extrabold text-white tracking-tight leading-snug sm:leading-tight font-sans transition-all duration-500 animate-fadeIn drop-shadow-[0_2px_12px_rgba(0,0,0,0.85)]"
               >
                 {activeItem.title}
               </h3>
             </div>
             <p
               key={`sub-${activeItem.year}`}
-              className="mt-2 sm:mt-3 text-xs sm:text-base text-white/85 font-medium leading-relaxed font-sans max-w-xl transition-all duration-500 drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
+              className="mt-2 sm:mt-3 text-xs sm:text-sm lg:text-base text-white/85 font-medium leading-relaxed font-sans max-w-xl transition-all duration-500 drop-shadow-[0_1px_8px_rgba(0,0,0,0.8)]"
             >
               {activeItem.subtitle}
             </p>
           </div>
 
           {/* Right-Side Vertical Year Timeline matching reference image EXACTLY */}
-          <div className="absolute right-4 sm:right-8 md:right-12 top-6 bottom-6 sm:top-8 sm:bottom-8 md:top-10 md:bottom-10 z-30 flex flex-col justify-between items-end select-none">
+          <div className="absolute right-3 sm:right-6 md:right-10 lg:right-12 top-5 bottom-5 sm:top-7 sm:bottom-7 z-30 flex flex-col justify-between items-end select-none">
             {timelineData.map((item) => {
               const isActive = item.year === activeYear;
               return (
@@ -196,14 +196,14 @@ export default function HowWeGotHere() {
                   onMouseEnter={() => setActiveYear(item.year)}
                   className={`relative text-right transition-all font-sans cursor-pointer group py-0.5 px-2 flex items-center justify-end ${
                     isActive
-                      ? "text-white font-black text-lg sm:text-xl md:text-2xl lg:text-[26px] tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]"
-                      : "text-white/40 hover:text-white/85 font-extrabold text-sm sm:text-base md:text-lg lg:text-[21px] tracking-tight drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
+                      ? "text-white font-black text-base sm:text-lg lg:text-[clamp(18px,2.4vh,26px)] tracking-tight drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]"
+                      : "text-white/40 hover:text-white/85 font-extrabold text-xs sm:text-sm lg:text-[clamp(13px,1.8vh,20px)] leading-tight tracking-tight drop-shadow-[0_1px_4px_rgba(0,0,0,0.6)]"
                   }`}
                   aria-label={`Select year ${item.year}`}
                 >
                   {/* Vertical Accent Indicator Line to the left of the active year matching reference screenshot */}
                   {isActive && (
-                    <span className="absolute -left-3.5 sm:-left-5 top-1/2 -translate-y-1/2 w-[2.5px] h-7 sm:h-9 md:h-10 bg-[#ff8c00] rounded-none shadow-[0_0_12px_rgba(255,140,0,0.95)] transition-all duration-300" />
+                    <span className="absolute -left-3.5 sm:-left-5 top-1/2 -translate-y-1/2 w-[2.5px] h-6 sm:h-7 lg:h-8 bg-[#ff8c00] rounded-none shadow-[0_0_12px_rgba(255,140,0,0.95)] transition-all duration-300" />
                   )}
                   <span>{item.year}</span>
                 </button>
