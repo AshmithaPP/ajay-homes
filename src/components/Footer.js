@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, ChevronDown } from "lucide-react";
 
@@ -110,14 +111,25 @@ export default function Footer() {
         </div>
 
         {/* Main 4-Column Content Container */}
-        <div className="relative z-10 mx-auto max-w-7xl 2xl:max-w-[1440px] px-4 sm:px-6 lg:px-8 pt-10 sm:pt-12 lg:pt-16 pb-6 sm:pb-8 [text-shadow:0_1px_3px_rgba(0,0,0,0.6)]">
+        <div className="relative z-10 mx-auto max-w-7xl 2xl:max-w-[1440px] px-4 sm:px-6 lg:px-8 pt-16 sm:pt-20 2xl:pt-24 pb-6 sm:pb-8 [text-shadow:0_1px_3px_rgba(0,0,0,0.6)]">
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.5fr_1fr_1fr_1fr] gap-x-6 gap-y-6 md:gap-y-8 sm:gap-x-10 lg:gap-x-8 xl:gap-x-12">
             
-            {/* Column 1: Reach Us */}
+            {/* Column 1: Logo + contact details */}
             <div className="col-span-2 md:col-span-3 lg:col-span-1 max-w-sm">
-              <h4 className="text-sm sm:text-base lg:text-[17px] 2xl:text-lg font-bold text-[#ff8c00] tracking-wider uppercase font-sans mb-3 lg:mb-4">
-                Reach Us
-              </h4>
+              <Link
+                href="#hero"
+                aria-label="Ajay Homes & Estates - back to top"
+                className="mb-4 lg:mb-5 inline-flex"
+              >
+                <Image
+                  src="/logo/logo-ajay-homes.png"
+                  alt="Ajay Homes & Estates - Creating Quality Lifestyle Buildings"
+                  width={2172}
+                  height={724}
+                  sizes="180px"
+                  className="h-10 sm:h-11 2xl:h-12 w-auto"
+                />
+              </Link>
 
               {/* Corporate Address */}
               <div className="text-xs 2xl:text-sm text-white/90 leading-relaxed font-sans lg:space-y-0.5">

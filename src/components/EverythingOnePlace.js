@@ -69,7 +69,7 @@ export default function EverythingOnePlace() {
     <section
       ref={sectionRef}
       id="services"
-      className="relative w-full bg-white pt-12 sm:pt-16 lg:pt-20 pb-4 sm:pb-6 lg:pb-6 px-4 sm:px-6 lg:px-8 text-slate-900"
+      className="relative w-full bg-white pt-16 sm:pt-20 2xl:pt-24 pb-8 sm:pb-10 2xl:pb-12 px-4 sm:px-6 lg:px-8 text-slate-900"
     >
       <div className="mx-auto max-w-7xl 2xl:max-w-[1440px]">
         {/* Main Section Header */}

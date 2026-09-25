@@ -18,17 +18,14 @@ const leftFeatures = [
   {
     icon: Compass,
     title: "Bespoke architectural planning",
-    desc: "Custom floorplans tailored to your life",
   },
   {
     icon: Building2,
     title: "Turnkey residential engineering",
-    desc: "Groundbreak to handover EPC execution",
   },
   {
     icon: CheckCircle2,
     title: "100% IS-Code certified materials",
-    desc: "Ultra-durable structural integrity",
   },
 ];
 
@@ -37,17 +34,14 @@ const rightFeatures = [
   {
     icon: ShieldCheck,
     title: "Transparent milestone governance",
-    desc: "Realtime tracking & clear legal NOC",
   },
   {
     icon: Palette,
     title: "Custom luxury interior tailoring",
-    desc: "Fine Italian marble & artisanal millwork",
   },
   {
     icon: Landmark,
     title: "Prime Chennai real estate assets",
-    desc: "Handpicked premium land parcels",
   },
 ];
 
@@ -94,6 +88,8 @@ function FeatureItem({ item, large }) {
 export default function SignatureLivingShowcase() {
   const containerRef = useRef(null);
   const fanRef = useRef(null);
+  const headerRef = useRef(null);
+  const [headerH, setHeaderH] = useState(190);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
   const [vp, setVp] = useState({ w: 1440, h: 900 });
@@ -109,6 +105,20 @@ export default function SignatureLivingShowcase() {
     update();
     window.addEventListener("resize", update, { passive: true });
     return () => window.removeEventListener("resize", update);
+  }, []);
+
+  // Measure the heading block (incl. its bottom margin) so the pinned stage can size the fan to fit
+  useEffect(() => {
+    const el = headerRef.current;
+    if (!el) return;
+    const measure = () => {
+      const mb = parseFloat(getComputedStyle(el).marginBottom) || 0;
+      setHeaderH(Math.ceil(el.offsetHeight + mb));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
   // Desktop (>=1280px): feature columns sit beside the fan and the section is pinned while scrolling.
@@ -159,8 +169,8 @@ export default function SignatureLivingShowcase() {
   let gapRatio;
   if (isDesktop) {
     centerW = Math.round(Math.min(390, Math.max(270, vp.h * 0.36, vp.w * 0.17)));
-    // Room left under the navbar, top padding, heading block and fan margins
-    centerH = Math.round(Math.min(centerW * 1.42, vp.h - 368));
+    // Room left under the navbar after the top padding (up to 56), heading block, fan margin (40) and bottom breathing space (40)
+    centerH = Math.round(Math.max(200, Math.min(centerW * 1.42, vp.h - NAV_H - headerH - 136)));
     // On short laptop screens (e.g. 14" at 150% scaling) keep the card from turning wide and squat
     centerW = Math.min(centerW, Math.round(centerH / 1.2));
     sideRatio = 0.62;
@@ -205,25 +215,19 @@ export default function SignatureLivingShowcase() {
       {/* Pinned Viewport Container on Desktop; Natural Flow on Mobile/Tablet */}
       <div
         className={`${
-          isDesktop && !isReducedMotion ? "sticky pt-6 2xl:pt-8 justify-start" : "relative py-10 sm:py-14 justify-center"
+          isDesktop && !isReducedMotion ? "sticky pt-12 2xl:pt-14 justify-start" : "relative py-16 sm:py-20 justify-center"
         } w-full flex flex-col items-center overflow-hidden bg-white px-4 sm:px-6 lg:px-10 2xl:px-16`}
         style={isDesktop && !isReducedMotion ? { top: `${NAV_H}px`, height: `calc(100vh - ${NAV_H}px)` } : undefined}
       >
         <div className="w-full max-w-[1680px] mx-auto">
           {/* Section Header */}
-          <div className="text-center max-w-3xl mx-auto mb-6 2xl:mb-10">
+          <div ref={headerRef} className="text-center max-w-3xl mx-auto mb-6 2xl:mb-10">
             <h2 className="text-2xl sm:text-3xl lg:text-[32px] 2xl:text-[38px] font-bold text-slate-900 tracking-tight font-sans leading-snug">
-              Spaces designed to become your{" "}
+              Spaces designed for your{" "}
               <span className="text-[#ff8c00]">forever home</span>
             </h2>
             <p className="mt-2.5 text-sm md:text-base 2xl:text-lg text-slate-600 font-sans max-w-2xl mx-auto">
-              Explore homes and residences crafted by Ajay Homes &amp; Estates &mdash; from thoughtful planning to completed living spaces.{" "}
-              <Link
-                href="#projects"
-                className="text-[#ff8c00] font-bold underline decoration-[#ff8c00]/40 underline-offset-4 hover:decoration-[#ff8c00] transition-colors"
-              >
-                Explore Our Projects &rarr;
-              </Link>
+Explore thoughtfully planned homes and residences by Ajay Homes & Estates.
             </p>
           </div>
 

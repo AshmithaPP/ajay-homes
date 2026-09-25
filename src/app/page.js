@@ -31,13 +31,13 @@ export default function Home() {
       {/* 5th Section: How we got here? Interactive Timeline Showcase */}
       <HowWeGotHere />
 
-      {/* 6th Section: An Unsurpassed Legacy of Leadership (1996 - 2026) */}
+      {/* 6th Section: A Legacy Built Over 60 Years (1966 - today) milestone timeline */}
       <UnsurpassedLegacy />
 
       {/* Happy Clients: customer testimonials mosaic */}
       <HappyClients />
 
-      {/* Refer a Friend & Earn Rewards Banner (Replica of Reference UI) */}
+      {/* Build with Confidence: projects & services banner (last section before the footer) */}
       <ReferralRewardBanner />
 
       {/* Footer */}

@@ -800,7 +800,7 @@ export default function RealtimeProjects() {
         {/* Phones: banner sits above the carousel so only the project cards scroll */}
         {isStacked && (
           <div
-            className={`mb-5 rounded-2xl bg-[#003a70] p-5 text-white shadow-xl transition-all duration-700 ease-out ${
+            className={`mb-5 rounded-2xl bg-[#003a70] p-5 text-white transition-all duration-700 ease-out ${
               isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           >
@@ -823,7 +823,7 @@ export default function RealtimeProjects() {
             {!isStacked && (
             <div
               style={{ width: `${bannerW}px` }}
-              className={`snap-start shrink-0 rounded-2xl sm:rounded-3xl bg-[#003a70] p-5 sm:p-7 2xl:p-8 text-white flex items-stretch justify-between gap-5 sm:gap-6 shadow-xl transition-all duration-700 ease-out ${
+              className={`snap-start shrink-0 rounded-2xl sm:rounded-3xl bg-[#003a70] p-5 sm:p-7 2xl:p-8 text-white flex items-stretch justify-between gap-5 sm:gap-6 transition-all duration-700 ease-out ${
                 isStacked ? "flex-col" : "flex-row"
               } ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"}`}
             >
@@ -836,15 +836,15 @@ export default function RealtimeProjects() {
                   className="shrink-0 rounded-2xl bg-white shadow-xl border border-slate-100 text-slate-900 flex flex-col overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-1">
                   {/* Top flush image */}
                   <div
-                    className="relative flex-1 w-full overflow-hidden bg-slate-100"
-                    style={{ minHeight: `${isStacked ? imgH : 170}px` }}
+                    className="relative w-full shrink-0 overflow-hidden bg-slate-100"
+                    style={{ height: `${imgH}px` }}
                   >
                     <Image
                       src={filteredProjects[0].image}
                       alt={filteredProjects[0].title}
                       fill
                       sizes="(max-width: 640px) 100vw, 400px"
-                      className="object-cover transition-transform duration-500 hover:scale-105"
+                      className="object-cover object-top transition-transform duration-500 hover:scale-105"
                     />
                     <StatusChip proj={filteredProjects[0]} />
                   </div>
@@ -875,7 +875,7 @@ export default function RealtimeProjects() {
                     alt={proj.title}
                     fill
                     sizes="(max-width: 640px) 100vw, 400px"
-                    className="object-cover transition-transform duration-500 hover:scale-105"
+                    className="object-cover object-top transition-transform duration-500 hover:scale-105"
                   />
                   <StatusChip proj={proj} />
                 </div>

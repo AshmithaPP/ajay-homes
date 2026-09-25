@@ -113,7 +113,7 @@ export default function HowWeGotHere() {
     <section
       ref={sectionRef}
       id="legacy"
-      className={`relative w-full bg-white py-8 sm:py-10 lg:py-12 text-slate-900 overflow-hidden transition-all duration-1000 ease-out ${
+      className={`relative w-full bg-white py-16 sm:py-20 2xl:py-24 text-slate-900 overflow-hidden transition-all duration-1000 ease-out ${
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
     >

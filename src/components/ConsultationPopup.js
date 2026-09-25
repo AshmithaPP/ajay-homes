@@ -57,6 +57,13 @@ export default function ConsultationPopup() {
     return () => window.removeEventListener("scroll", check);
   }, []);
 
+  // Let other sections open the popup (e.g. "Get a Free Quote" buttons)
+  useEffect(() => {
+    const open = () => setIsOpen(true);
+    window.addEventListener("open-consultation", open);
+    return () => window.removeEventListener("open-consultation", open);
+  }, []);
+
   // Lock page scroll and close on Escape while open
   useEffect(() => {
     if (!isOpen) return;
