@@ -65,9 +65,10 @@ export default function ReferralRewardBanner() {
 
           {/* Left column: engineers reviewing plans on site */}
           <div className="w-full lg:w-[32%] xl:w-[30%] flex items-center justify-center pt-8 sm:pt-6 lg:pt-4 shrink-0">
-            <div className="relative aspect-[238/152] w-full max-w-[320px] sm:max-w-[360px] lg:max-w-none">
+            <div className="relative aspect-[1560/1008] w-full max-w-[320px] sm:max-w-[360px] lg:max-w-none">
               <Image
-                src="/assets/img/build-with-confidence.png"
+                src="/assets/testimonials/last-section.png"
+                unoptimized
                 alt="Ajay Homes & Estates engineers reviewing plans at a construction site"
                 fill
                 sizes="(max-width: 1024px) 360px, 400px"

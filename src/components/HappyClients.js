@@ -210,6 +210,7 @@ export default function HappyClients() {
     <section
       ref={sectionRef}
       id="happy-clients"
+      suppressHydrationWarning
       className="relative w-full bg-white py-14 sm:py-18 lg:py-20 2xl:py-24 text-slate-900 overflow-hidden font-sans border-t border-slate-100"
     >
       {/* Synchronized 60fps GPU-accelerated horizontal slide keyframes */}
@@ -253,6 +254,7 @@ export default function HappyClients() {
 
           {/* Centered Pill Carousel Indicator */}
           <div
+            suppressHydrationWarning
             className={`flex items-center justify-center gap-2 mt-4 sm:mt-5 transition-all duration-800 delay-150 ease-out ${
               isVisible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-4 scale-95"
             }`}
@@ -263,6 +265,8 @@ export default function HappyClients() {
               return (
                 <button
                   key={reel.id}
+                  type="button"
+                  suppressHydrationWarning
                   onClick={() => handleNavigate(idx)}
                   className={`transition-all duration-400 ease-out cursor-pointer ${
                     isActive
@@ -292,6 +296,8 @@ export default function HappyClients() {
         >
           {/* Subtle Desktop Navigation Arrows */}
           <button
+            type="button"
+            suppressHydrationWarning
             onClick={goPrev}
             className="hidden md:flex absolute -left-3 lg:-left-5 top-1/2 -translate-y-1/2 z-30 h-10 w-10 2xl:h-12 2xl:w-12 items-center justify-center rounded-full bg-white/95 text-slate-800 shadow-xl border border-slate-200/90 backdrop-blur-sm transition-all hover:scale-110 hover:bg-white cursor-pointer active:scale-95"
             aria-label="Previous reel"
@@ -300,6 +306,8 @@ export default function HappyClients() {
           </button>
 
           <button
+            type="button"
+            suppressHydrationWarning
             onClick={goNext}
             className="hidden md:flex absolute -right-3 lg:-right-5 top-1/2 -translate-y-1/2 z-30 h-10 w-10 2xl:h-12 2xl:w-12 items-center justify-center rounded-full bg-white/95 text-slate-800 shadow-xl border border-slate-200/90 backdrop-blur-sm transition-all hover:scale-110 hover:bg-white cursor-pointer active:scale-95"
             aria-label="Next reel"

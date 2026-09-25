@@ -226,8 +226,9 @@ export default function SignatureLivingShowcase() {
               Spaces designed for your{" "}
               <span className="text-[#ff8c00]">forever home</span>
             </h2>
-            <p className="mt-2.5 text-sm md:text-base 2xl:text-lg text-slate-600 font-sans max-w-2xl mx-auto">
-Explore thoughtfully planned homes and residences by Ajay Homes & Estates.
+            {/* One line from tablets up; wraps naturally on phones */}
+            <p className="mt-2.5 text-sm md:text-base 2xl:text-lg text-slate-600 font-sans mx-auto md:whitespace-nowrap">
+              Explore thoughtfully planned homes and residences by Ajay Homes &amp; Estates.
             </p>
           </div>
 

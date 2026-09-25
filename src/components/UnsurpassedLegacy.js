@@ -1,148 +1,243 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
-import { House, Handshake, DraftingCompass, Sprout, Building2 } from "lucide-react";
+import { Compass, ArrowRight } from "lucide-react";
 
-// Ajay Homes & Estates milestones (founded 1966, per the "Since 1966" brand mark)
-const milestones = [
-  { icon: House, year: "1966", text: "Ajay Homes Founded" },
-  { icon: Handshake, year: "1980s", text: "Building Trust & Expanding Expertise" },
-  { icon: DraftingCompass, year: "2000s", text: "Evolving with Modern Architecture" },
-  { icon: Sprout, year: "2010s", text: "Growing with New-Generation Design" },
-  { icon: Building2, year: "2020s", text: "60 Years of Experience, Built for Tomorrow" },
+// The 50+ Years Architectural Journey of Ajay Homes & Estates
+const ERAS = [
+  {
+    year: "1966",
+    badge: "1966 — Foundation",
+    title: "Ajay Homes Founded",
+    tagline: "Visionary Foundation in Chennai",
+    desc: "Founded in 1966, Ajay Homes & Estates pioneered bespoke residential craftsmanship in Chennai, establishing an enduring benchmark for structural honesty, quality masonry, and thoughtful architecture.",
+    stats: [
+      { label: "Origin", val: "Chennai, TN" },
+      { label: "Craft", val: "Handcrafted Masonry" },
+      { label: "Benchmark", val: "Quality First" },
+    ],
+    image: "/assets/img/legacy-blueprint-left.jpg",
+    alt: "Ajay Homes Foundation Blueprint & Architectural Drafting",
+    blueprintTag: "PLAN // 1966-01 • STRUCTURAL FOUNDATION",
+  },
+  {
+    year: "1980s",
+    badge: "1980s — Trust & Expansion",
+    title: "Building Trust & Expanding Expertise",
+    tagline: "Generational Community Trust",
+    desc: "Expanding across prime coastal and residential neighborhoods in Adyar and Besant Nagar, delivering homes defined by uncompromising reinforced concrete engineering and 100% on-time handovers.",
+    stats: [
+      { label: "Key Locales", val: "Adyar & Besant Nagar" },
+      { label: "Engineering", val: "Reinforced Concrete" },
+      { label: "Execution", val: "100% On-Time" },
+    ],
+    image: "/assets/img/img-011.jpeg",
+    alt: "Ajay Homes 1980s Landmark Residential Construction",
+    blueprintTag: "ELEV // 1980-04 • RESIDENTIAL ELEVATION",
+  },
+  {
+    year: "2000s",
+    badge: "2000s — Modern Architecture",
+    title: "Evolving with Modern Architecture",
+    tagline: "Contemporary Structural Engineering",
+    desc: "Pioneering modern architectural engineering across Chennai with expansive cantilevered balconies, open luxury floorplans, double-height living spaces, and contemporary facade engineering.",
+    stats: [
+      { label: "Design Language", val: "Contemporary Luxury" },
+      { label: "Structure", val: "Expansive Cantilevers" },
+      { label: "Spaces", val: "Open Floorplans" },
+    ],
+    image: "/assets/img/img-002.jpeg",
+    alt: "Ajay Homes 2000s Contemporary Multi-Story Residence",
+    blueprintTag: "CANTILEVER // 2000-09 • MODERN FACADE",
+  },
+  {
+    year: "2010s",
+    badge: "2010s — Sustainable Living",
+    title: "Growing with New-Generation Design",
+    tagline: "Sustainable Eco-Luxury Living",
+    desc: "Integrating sustainable green building principles, smart home automation, curated rooftop garden terraces, and natural cross-ventilation into iconic private coastal residences.",
+    stats: [
+      { label: "Philosophy", val: "Bioclimatic Design" },
+      { label: "Technology", val: "Smart Home Automation" },
+      { label: "Lifestyle", val: "Curated Terraces" },
+    ],
+    image: "/assets/img/besantnagar-residence-view/img19.jpg",
+    alt: "Ajay Homes 2010s Luxury Coastal Residence Besant Nagar",
+    blueprintTag: "TERRACE // 2010-12 • BIOCLIMATIC ESTATE",
+  },
+  {
+    year: "2020s",
+    badge: "2020s — Built for Tomorrow",
+    title: "50+ Years of Experience, Built for Tomorrow",
+    tagline: "Iconic Turnkey Architectural Landmarks",
+    desc: "Delivering South India's premier turnkey luxury residences with 100% IS-code certified structural precision, visionary contemporary aesthetics, and enduring multi-generational lifestyle value.",
+    stats: [
+      { label: "Portfolio", val: "150+ Landmarks" },
+      { label: "Standards", val: "100% IS-Code Certified" },
+      { label: "Delivery", val: "Turnkey Excellence" },
+    ],
+    image: "/assets/img/besantnagar-residence-view/img103.jpg",
+    alt: "Ajay Homes 2020s Award-Winning Architectural Landmark",
+    blueprintTag: "LANDMARK // 2020-PRESENT • TURNKEY LUXURY",
+  },
 ];
 
-const HEADING = "A Legacy Built Over 60 Years";
-
-// Soft fade so the sketches melt into the background instead of ending in hard edges
-const fadeLeft = "radial-gradient(ellipse 70% 75% at 35% 40%, #000 45%, transparent 100%)";
-const fadeRight = "radial-gradient(ellipse 70% 75% at 65% 45%, #000 45%, transparent 100%)";
-
 export default function UnsurpassedLegacy() {
-  const sectionRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
-  const [typed, setTyped] = useState(0);
+  const [activeEraIndex, setActiveEraIndex] = useState(0);
 
+  // Automatically transition the era and image every 2 seconds
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el) return;
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true);
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.15 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
+    const timer = setInterval(() => {
+      setActiveEraIndex((prev) => (prev + 1) % ERAS.length);
+    }, 2000);
+
+    return () => clearInterval(timer);
   }, []);
 
-  // Type the heading out once the section is on screen (instant for reduced-motion users)
-  useEffect(() => {
-    if (!isVisible) return;
-    const step = window.matchMedia("(prefers-reduced-motion: reduce)").matches ? HEADING.length : 1;
-    let i = 0;
-    const id = setInterval(() => {
-      i += step;
-      setTyped(i);
-      if (i >= HEADING.length) clearInterval(id);
-    }, 70);
-    return () => clearInterval(id);
-  }, [isVisible]);
+  const activeEra = ERAS[activeEraIndex];
 
   return (
     <section
-      ref={sectionRef}
       id="unsurpassed-legacy"
-      className="relative mt-6 sm:mt-8 2xl:mt-10 w-full overflow-hidden bg-white pt-16 sm:pt-20 2xl:pt-24 pb-16 sm:pb-20 2xl:pb-24 px-4 sm:px-6 lg:px-8 font-sans text-slate-900"
+      className="relative w-full bg-white pt-16 sm:pt-20 lg:pt-24 pb-8 sm:pb-10 lg:pb-14 px-4 sm:px-6 lg:px-8 xl:px-10 text-slate-900 border-t border-slate-100 select-text"
     >
-      {/* Very light brand-navy wash behind the whole section */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-primary/[0.03] via-primary/[0.05] to-primary/[0.02]" aria-hidden />
-
-      {/* Pencil-sketch illustrations of Ajay projects (Scarlet Diamond left, contemporary villa right), in brand navy */}
-      <div
-        className="pointer-events-none absolute left-0 top-0 hidden lg:block lg:w-[300px] xl:w-[380px] 2xl:w-[440px] aspect-[648/720] opacity-30"
-        style={{ WebkitMaskImage: fadeLeft, maskImage: fadeLeft }}
-        aria-hidden
-      >
-        <Image src="/assets/img/legacy-sketch-left.png" alt="" fill sizes="440px" className="object-contain object-left-top" />
-      </div>
-      <div
-        className="pointer-events-none absolute right-0 top-10 hidden lg:block lg:w-[310px] xl:w-[400px] 2xl:w-[460px] aspect-square opacity-30"
-        style={{ WebkitMaskImage: fadeRight, maskImage: fadeRight }}
-        aria-hidden
-      >
-        <Image src="/assets/img/legacy-sketch-right.png" alt="" fill sizes="460px" className="object-contain object-right-top" />
-      </div>
-
-      <div
-        className={`relative mx-auto w-full max-w-7xl 2xl:max-w-[1440px] transition-all duration-700 ease-out ${
-          isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-        }`}
-      >
-        {/* Heading block */}
-        <div className="mx-auto max-w-xl text-center">
-          <span className="mx-auto block h-0.5 w-10 rounded-full bg-secondary" />
-          <h2
-            aria-label={HEADING}
-            className="mt-5 text-2xl sm:text-3xl lg:text-[34px] 2xl:text-[40px] font-bold leading-tight tracking-tight text-primary"
-          >
-            {/* Full text is always laid out (untyped part transparent), so line breaks never shift while typing */}
-            <span aria-hidden>
-              {HEADING.slice(0, typed)}
-              {/* Zero-width anchor: the caret never takes up space, so it can't wrap onto a new line */}
-              <span className="relative">
-                <span className="typing-caret absolute left-1 top-[0.12em] h-[1em] w-[3px] rounded-full bg-secondary" />
-              </span>
-              <span className="text-transparent">{HEADING.slice(typed)}</span>
+      <div className="mx-auto w-full max-w-[1400px] 2xl:max-w-[1480px] grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-12 xl:gap-14 items-center">
+        
+        {/* LEFT COLUMN (6 Cols): Typography, Year Display, and Editorial Story */}
+        <div className="lg:col-span-6 flex flex-col justify-center text-left space-y-3 sm:space-y-4">
+          
+          {/* Era Tag & Accent Line */}
+          <div className="flex items-center gap-3">
+            <span className="h-1 w-10 rounded-full bg-secondary shrink-0" />
+            <span className="text-xs sm:text-sm font-semibold uppercase tracking-widest text-secondary font-sans">
+              {activeEra.tagline}
             </span>
-          </h2>
-          <p className="mt-2 text-5xl sm:text-6xl lg:text-[64px] 2xl:text-[76px] font-light leading-none tracking-tight text-primary">
-            1966
-          </p>
-          <p className="mx-auto mt-5 max-w-md text-[13px] sm:text-sm 2xl:text-base leading-relaxed text-slate-600">
-            Founded in 1966, Ajay Homes &amp; Estates has grown through decades of experience, evolving with
-            changing lifestyles while staying committed to quality, trust and thoughtful design.
-          </p>
-        </div>
+          </div>
 
-        {/* Timeline: vertical on phones, horizontal row from tablets up */}
-        <ol className="relative mx-auto mt-10 sm:mt-12 lg:mt-14 grid max-w-5xl 2xl:max-w-6xl grid-cols-1 gap-7 sm:grid-cols-5 sm:gap-3 lg:gap-6">
-          {/* connector line through the icon centres (tablet/desktop) */}
-          <span
-            className="pointer-events-none absolute left-[10%] right-[10%] top-7 lg:top-8 hidden sm:block h-px bg-secondary/30"
-            aria-hidden
-          />
-          {/* connector line on phones */}
-          <span
-            className="pointer-events-none absolute left-7 top-7 bottom-7 w-px bg-secondary/30 sm:hidden"
-            aria-hidden
-          />
-
-          {milestones.map(({ icon: Icon, year, text }, i) => (
-            <li
-              key={year}
-              style={{ transitionDelay: `${150 + i * 90}ms` }}
-              className={`relative flex items-center gap-4 text-left sm:flex-col sm:gap-0 sm:text-center transition-all duration-700 ease-out ${
-                isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-              }`}
+          {/* Giant Architectural Display Year with smooth fade-in */}
+          <div className="relative overflow-hidden py-0.5">
+            <div
+              key={`year-${activeEra.year}`}
+              className="text-6xl sm:text-7xl lg:text-8xl 2xl:text-[96px] font-extralight tracking-tight text-primary font-sans leading-none animate-in fade-in duration-300"
             >
-              <span className="relative z-10 flex h-14 w-14 lg:h-16 lg:w-16 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary ring-4 ring-white">
-                <Icon className="h-6 w-6 lg:h-7 lg:w-7" strokeWidth={1.4} />
-              </span>
-              <span className="hidden sm:block mt-3 h-1.5 w-1.5 rounded-full bg-secondary" aria-hidden />
-              <div className="sm:mt-2">
-                <p className="text-xl lg:text-2xl 2xl:text-[26px] font-bold leading-tight text-primary">{year}</p>
-                <p className="mt-1 sm:mx-auto sm:max-w-[150px] lg:max-w-[170px] text-xs lg:text-[13px] 2xl:text-sm leading-snug text-slate-600">
-                  {text}
+              {activeEra.year}
+            </div>
+          </div>
+
+          {/* Era Title */}
+          <h3
+            key={`title-${activeEra.year}`}
+            className="text-2xl sm:text-3xl lg:text-[32px] 2xl:text-[38px] font-extrabold text-primary tracking-tight font-sans leading-snug animate-in fade-in duration-300"
+          >
+            {activeEra.title}
+          </h3>
+
+          {/* Narrative Story */}
+          <p
+            key={`desc-${activeEra.year}`}
+            className="text-xs sm:text-sm lg:text-base leading-relaxed text-slate-600 font-sans max-w-xl animate-in fade-in duration-300 min-h-[4rem]"
+          >
+            {activeEra.desc}
+          </p>
+
+          {/* 3 Key Architectural Metrics / Highlights for this Era */}
+          <div
+            key={`stats-${activeEra.year}`}
+            className="grid grid-cols-3 gap-4 sm:gap-6 border-t border-slate-100 pt-3 sm:pt-4 animate-in fade-in duration-300 max-w-xl"
+          >
+            {activeEra.stats.map((s) => (
+              <div key={s.label}>
+                <p className="text-[10px] sm:text-xs uppercase tracking-wider text-slate-600 font-sans font-medium">
+                  {s.label}
+                </p>
+                <p className="mt-0.5 text-xs sm:text-sm 2xl:text-base font-bold text-primary font-sans">
+                  {s.val}
                 </p>
               </div>
-            </li>
-          ))}
-        </ol>
+            ))}
+          </div>
+
+          {/* Interactive Era Dots Indicator */}
+          <div className="flex items-center gap-2 pt-2">
+            {ERAS.map((era, idx) => (
+              <button
+                key={era.year}
+                type="button"
+                onClick={() => setActiveEraIndex(idx)}
+                className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                  idx === activeEraIndex
+                    ? "w-8 bg-secondary"
+                    : "w-2 bg-slate-200 hover:bg-slate-300"
+                }`}
+                title={`View ${era.year}`}
+                aria-label={`Go to ${era.year}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* RIGHT COLUMN (6 Cols): Architectural Showcase Card with Smooth Cross-Fade */}
+        <div className="lg:col-span-6 relative w-full h-[300px] sm:h-[360px] md:h-[420px] lg:h-[450px] xl:h-[490px] 2xl:h-[530px]">
+          
+          {/* Background subtle elevation blueprint coordinate watermark */}
+          <div className="pointer-events-none absolute -top-4 -right-4 text-[10px] font-mono text-slate-300 uppercase tracking-widest hidden sm:block">
+            {activeEra.blueprintTag}
+          </div>
+
+          {/* The Image Container with Natural Cross-Fading */}
+          <div className="relative w-full h-full rounded-2xl overflow-hidden border border-slate-200 bg-slate-50 shadow-md">
+            {ERAS.map((era, idx) => {
+              const isCurrent = idx === activeEraIndex;
+              return (
+                <div
+                  key={era.year}
+                  className={`absolute inset-0 transition-opacity duration-700 ease-out ${
+                    isCurrent
+                      ? "opacity-100 z-10"
+                      : "opacity-0 pointer-events-none z-0"
+                  }`}
+                >
+                  <Image
+                    src={era.image}
+                    alt={era.alt}
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    priority={idx === 0}
+                    className="object-cover object-center"
+                  />
+
+                  {/* Gradient Overlay for Editorial Depth & Legibility */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent" />
+
+                  {/* Architectural Blueprint Tag Pill on Image */}
+                  <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-20">
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-950/60 backdrop-blur-md px-3 py-1 text-[11px] font-medium text-white border border-white/20 font-sans">
+                      <Compass className="h-3 w-3 text-secondary animate-spin-slow" />
+                      <span>{era.badge}</span>
+                    </span>
+                  </div>
+
+                  {/* Bottom Project Caption Pill */}
+                  <div className="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 z-20 flex items-center justify-between text-white">
+                    <div>
+                      <p className="text-xs sm:text-sm font-bold font-sans drop-shadow-sm">
+                        {era.title}
+                      </p>
+                      <p className="text-[10px] sm:text-xs text-white/80 font-sans">
+                        Ajay Homes &amp; Estates • Architectural Milestone
+                      </p>
+                    </div>
+                    <span className="h-8 w-8 rounded-full bg-secondary text-white flex items-center justify-center shrink-0 shadow-sm">
+                      <ArrowRight className="h-4 w-4" />
+                    </span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
       </div>
     </section>
   );

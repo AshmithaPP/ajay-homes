@@ -197,3 +197,96 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .typing-caret { animation: none; }
 }
+
+/* ---------- Floating chat widget ---------- */
+@keyframes chatPanelIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes chatFloatLift {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+.chat-panel {
+  /* Column: header / scrollable body / input. Height follows the content, capped to the screen */
+  display: flex;
+  flex-direction: column;
+  transform-origin: bottom right;
+  /* phones: equal 1rem gutters on both sides (the launcher sits 1rem from the right edge) */
+  width: calc(100vw - 2rem);
+  max-height: calc(100dvh - env(safe-area-inset-bottom, 0px) - 5rem);
+  box-shadow:
+    0 24px 48px -12px color-mix(in srgb, var(--color-primary) 18%, transparent),
+    0 8px 16px -8px rgba(15, 23, 42, 0.12);
+}
+
+.chat-panel__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  /* thin visible scrollbar so it is obvious when more options sit below (very short screens) */
+  scrollbar-width: thin;
+  scrollbar-color: rgb(203 213 225) transparent;
+}
+.chat-panel__body::-webkit-scrollbar { width: 4px; }
+.chat-panel__body::-webkit-scrollbar-thumb { background: rgb(203 213 225); border-radius: 9999px; }
+
+/* large phones / small tablets */
+@media (min-width: 480px) {
+  .chat-panel { width: 22rem; }
+}
+
+/* tablets, laptops, desktops (launcher sits 1.5rem from the edges) */
+@media (min-width: 640px) {
+  .chat-panel {
+    width: 23rem;
+    max-height: min(36rem, calc(100dvh - env(safe-area-inset-bottom, 0px) - 6.5rem));
+  }
+}
+
+/* large desktops */
+@media (min-width: 1536px) {
+  .chat-panel { width: 24rem; }
+}
+
+.chat-panel--closed {
+  pointer-events: none;
+  opacity: 0;
+  transform: translateY(10px) scale(0.97);
+  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.chat-panel--open {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: chatPanelIn 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.chat-float-btn {
+  box-shadow:
+    0 10px 24px -6px color-mix(in srgb, var(--color-primary) 35%, transparent),
+    0 4px 8px -4px rgba(15, 23, 42, 0.1);
+  animation: chatFloatLift 5s ease-in-out infinite;
+}
+
+.chat-float-btn--open {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chat-panel--open { animation: none; }
+  .chat-panel--closed { transition: opacity 0.15s ease; }
+  .chat-float-btn { animation: none; }
+}

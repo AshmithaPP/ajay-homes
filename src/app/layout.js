@@ -1,5 +1,6 @@
 import { Montserrat } from "next/font/google";
 import "./globals.css";
+import FloatingChat from "@/components/FloatingChat";
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -19,6 +20,7 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${montserrat.variable} h-full antialiased`}>
       <body className="min-h-full bg-white text-slate-900 flex flex-col font-sans">
         {children}
+        <FloatingChat />
       </body>
     </html>
   );
