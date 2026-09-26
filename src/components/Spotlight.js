@@ -254,19 +254,19 @@ export default function Spotlight() {
               }}
               className="group flex flex-col items-center cursor-pointer select-none text-center outline-none"
             >
-              {/* Product Silhouette Floating Frame */}
-              <div className="relative h-16 sm:h-20 lg:h-22 w-full flex items-center justify-center">
+              {/* Product Silhouette Floating Frame - Subtly increased for a balanced look */}
+              <div className="relative h-[74px] sm:h-[88px] lg:h-[98px] w-full flex items-center justify-center">
                 <Image
                   src={item.image}
                   alt={item.name}
-                  width={140}
-                  height={100}
-                  className="max-h-full w-auto max-w-full object-contain object-center transition-transform duration-300 ease-out group-hover:scale-110 group-hover:-translate-y-1 drop-shadow-xs"
+                  width={160}
+                  height={115}
+                  className="max-h-full w-auto max-w-full object-contain object-center transition-transform duration-300 ease-out group-hover:scale-108 group-hover:-translate-y-1 drop-shadow-xs"
                 />
               </div>
 
               {/* Title below image matching Nike clean typography */}
-              <div className="mt-3 w-full">
+              <div className="mt-2.5 sm:mt-3 w-full">
                 <h3 className="text-[11px] sm:text-[12px] font-bold text-slate-900 group-hover:text-[#ff8c00] transition-colors leading-tight font-sans text-center">
                   {item.name}
                 </h3>
