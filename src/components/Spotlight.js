@@ -242,17 +242,12 @@ export default function Spotlight() {
         {/* Nike-Style Pixel-Perfect 8-Column Grid with floating images and clean titles */}
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-8 gap-x-4 sm:gap-x-6 lg:gap-x-6 gap-y-8 sm:gap-y-10 lg:gap-y-12">
           {spotlightItems.map((item) => (
-            <div
+            <button
               key={item.id}
+              type="button"
+              suppressHydrationWarning
               onClick={() => setSelectedItem(item)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  setSelectedItem(item);
-                }
-              }}
-              className="group flex flex-col items-center cursor-pointer select-none text-center outline-none"
+              className="group flex flex-col items-center cursor-pointer select-none text-center outline-none bg-transparent border-0 p-0 w-full"
             >
               {/* Product Silhouette Floating Frame - Subtly increased for a balanced look */}
               <div className="relative h-[74px] sm:h-[88px] lg:h-[98px] w-full flex items-center justify-center">
@@ -271,7 +266,7 @@ export default function Spotlight() {
                   {item.name}
                 </h3>
               </div>
-            </div>
+            </button>
           ))}
         </div>
       </div>
