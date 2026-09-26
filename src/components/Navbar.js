@@ -254,115 +254,129 @@ export default function Navbar() {
         </div>
       </header>
 
-      {/* Mobile Drawer Overlay */}
+      {/* Mobile Menu Dropdown & Soft Backdrop */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 flex flex-col bg-white px-6 pt-36 pb-8 overflow-y-auto lg:hidden animate-in fade-in duration-200 text-slate-900">
-          <div className="flex flex-col gap-2">
-            <Link
-              href="/"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between rounded-xl px-4 py-3 text-base font-bold text-slate-900 hover:bg-slate-100 transition-colors border-b border-slate-200"
-            >
-              <span>Home</span>
-              <ChevronRight className="h-4 w-4 text-slate-400" />
-            </Link>
+        <>
+          {/* Soft backdrop */}
+          <div
+            onClick={() => setMobileMenuOpen(false)}
+            className="fixed inset-0 top-[92px] sm:top-[104px] z-40 bg-black/35 backdrop-blur-[2px] lg:hidden animate-in fade-in duration-200"
+            aria-hidden="true"
+          />
 
-            <Link
-              href="#about"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between rounded-xl px-4 py-3 text-base font-bold text-slate-900 hover:bg-slate-100 transition-colors border-b border-slate-200"
-            >
-              <span>About</span>
-              <ChevronRight className="h-4 w-4 text-slate-400" />
-            </Link>
-
-            {/* Mobile Services Accordion */}
-            <div className="border-b border-slate-200">
-              <button
-                onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
-                className="flex w-full items-center justify-between rounded-xl px-4 py-3 text-base font-bold text-slate-900 hover:bg-slate-100 transition-colors"
+          {/* Floating Compact Menu Card */}
+          <div className="fixed top-[96px] sm:top-[108px] inset-x-3 sm:inset-x-6 z-50 max-h-[calc(100dvh-7.5rem)] overflow-y-auto rounded-2xl border border-slate-200/90 bg-white/98 backdrop-blur-md p-3.5 sm:p-4 shadow-2xl lg:hidden animate-in fade-in zoom-in-95 duration-200 text-slate-900">
+            <div className="flex flex-col divide-y divide-slate-100">
+              <Link
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between rounded-xl px-3 py-2 text-[14px] font-bold text-slate-800 hover:text-[#ff8c00] hover:bg-slate-50 transition-colors"
               >
-                <div className="flex items-center gap-2">
-                  <span>Services</span>
-                  <span className="rounded-full bg-[#ff8c00]/20 px-2 py-0.5 text-[10px] font-bold text-[#ff8c00]">
-                    6 Specialties
-                  </span>
-                </div>
-                <ChevronDown
-                  className={`h-4 w-4 text-[#ff8c00] transition-transform duration-200 ${
-                    mobileServicesOpen ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
+                <span>Home</span>
+                <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
+              </Link>
 
-              {mobileServicesOpen && (
-                <div className="ml-3 my-1 flex flex-col gap-1 border-l-2 border-[#ff8c00]/40 pl-3">
-                  {servicesList.map((item, idx) => {
-                    const IconComponent = item.icon;
-                    return (
-                      <Link
-                        key={idx}
-                        href={item.href}
-                        onClick={() => setMobileMenuOpen(false)}
-                        className="flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold text-slate-700 hover:text-[#ff8c00] hover:bg-slate-100 transition-colors"
-                      >
-                        <IconComponent className="h-4 w-4 text-[#ff8c00]" />
-                        <span>{item.title}</span>
-                      </Link>
-                    );
-                  })}
-                </div>
-              )}
+              <Link
+                href="#about"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between rounded-xl px-3 py-2 text-[14px] font-bold text-slate-800 hover:text-[#ff8c00] hover:bg-slate-50 transition-colors"
+              >
+                <span>About</span>
+                <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
+              </Link>
+
+              {/* Mobile Services Accordion */}
+              <div>
+                <button
+                  type="button"
+                  onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                  className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-[14px] font-bold text-slate-800 hover:text-[#ff8c00] hover:bg-slate-50 transition-colors"
+                >
+                  <div className="flex items-center gap-2">
+                    <span>Services</span>
+                    <span className="rounded-full bg-[#ff8c00]/15 px-2 py-0.5 text-[10px] font-bold text-[#ff8c00]">
+                      6 Specialties
+                    </span>
+                  </div>
+                  <ChevronDown
+                    className={`h-4 w-4 text-[#ff8c00] transition-transform duration-200 ${
+                      mobileServicesOpen ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+
+                {mobileServicesOpen && (
+                  <div className="my-1 grid grid-cols-1 gap-1 border-l-2 border-[#ff8c00]/30 pl-2.5 ml-2.5 animate-in fade-in duration-200">
+                    {servicesList.map((item, idx) => {
+                      const IconComponent = item.icon;
+                      return (
+                        <Link
+                          key={idx}
+                          href={item.href}
+                          onClick={() => {
+                            setMobileMenuOpen(false);
+                            setMobileServicesOpen(false);
+                          }}
+                          className="flex items-center gap-2.5 rounded-lg px-2.5 py-1.5 text-[12.5px] font-semibold text-slate-700 hover:text-[#ff8c00] hover:bg-orange-50/50 transition-colors"
+                        >
+                          <IconComponent className="h-3.5 w-3.5 text-[#ff8c00] shrink-0" />
+                          <span>{item.title}</span>
+                        </Link>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+
+              <Link
+                href="#gallery"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between rounded-xl px-3 py-2 text-[14px] font-bold text-slate-800 hover:text-[#ff8c00] hover:bg-slate-50 transition-colors"
+              >
+                <span>Gallery</span>
+                <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
+              </Link>
+
+              <Link
+                href="#resources"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between rounded-xl px-3 py-2 text-[14px] font-bold text-slate-800 hover:text-[#ff8c00] hover:bg-slate-50 transition-colors"
+              >
+                <span>Resources</span>
+                <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
+              </Link>
+
+              <Link
+                href="#contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex items-center justify-between rounded-xl px-3 py-2 text-[14px] font-bold text-slate-800 hover:text-[#ff8c00] hover:bg-slate-50 transition-colors"
+              >
+                <span>Contact</span>
+                <ChevronRight className="h-3.5 w-3.5 text-slate-300" />
+              </Link>
             </div>
 
-            <Link
-              href="#gallery"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between rounded-xl px-4 py-3 text-base font-bold text-slate-900 hover:bg-slate-100 transition-colors border-b border-slate-200"
-            >
-              <span>Gallery</span>
-              <ChevronRight className="h-4 w-4 text-slate-400" />
-            </Link>
+            {/* Contact Action Strip in Mobile Menu */}
+            <div className="mt-3 pt-2.5 border-t border-slate-100 flex flex-col sm:flex-row gap-2">
+              <a
+                href="tel:+919840012345"
+                className="flex-1 flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-slate-50 py-2.5 px-3 text-[12px] font-semibold text-slate-800 hover:bg-slate-100 transition-colors"
+              >
+                <Phone className="h-3.5 w-3.5 text-[#ff8c00]" />
+                <span>+91 98400 12345</span>
+              </a>
 
-            <Link
-              href="#resources"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between rounded-xl px-4 py-3 text-base font-bold text-slate-900 hover:bg-slate-100 transition-colors border-b border-slate-200"
-            >
-              <span>Resources</span>
-              <ChevronRight className="h-4 w-4 text-slate-400" />
-            </Link>
-
-            <Link
-              href="#contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-between rounded-xl px-4 py-3 text-base font-bold text-slate-900 hover:bg-slate-100 transition-colors border-b border-slate-200"
-            >
-              <span>Contact</span>
-              <ChevronRight className="h-4 w-4 text-slate-400" />
-            </Link>
+              <a
+                href="tel:+919840012345"
+                onClick={() => setMobileMenuOpen(false)}
+                className="flex-1 flex items-center justify-center gap-1.5 rounded-xl bg-[#ff8c00] py-2.5 px-3 text-[12px] font-bold text-white shadow-md shadow-[#ff8c00]/30 hover:bg-[#e07b00] transition-colors"
+              >
+                <span>Get Free Consultation</span>
+                <ArrowUpRight className="h-3.5 w-3.5" />
+              </a>
+            </div>
           </div>
-
-          {/* Contact Action Strip in Mobile Drawer */}
-          <div className="mt-8 pt-6 border-t border-slate-200 flex flex-col gap-3">
-            <a
-              href="tel:+919840012345"
-              className="flex items-center justify-center gap-2.5 rounded-full border border-slate-300 bg-slate-50 py-3 text-sm font-semibold text-slate-800"
-            >
-              <Phone className="h-4 w-4 text-[#ff8c00]" />
-              <span>Call Hotline: +91 98400 12345</span>
-            </a>
-
-            <a
-              href="tel:+919840012345"
-              onClick={() => setMobileMenuOpen(false)}
-              className="flex items-center justify-center gap-2 rounded-full bg-[#ff8c00] py-3.5 text-sm font-bold text-white shadow-lg shadow-[#ff8c00]/30"
-            >
-              <span>Get Free Consultation</span>
-              <ArrowUpRight className="h-4 w-4" />
-            </a>
-          </div>
-        </div>
+        </>
       )}
     </>
   );

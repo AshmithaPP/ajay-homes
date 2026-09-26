@@ -216,13 +216,14 @@ body {
 }
 
 .chat-panel {
-  /* Column: header / scrollable body / input. Height follows the content, capped to the screen */
+  /* Column: header / scrollable body / input. Height follows content with responsive constraints */
   display: flex;
   flex-direction: column;
   transform-origin: bottom right;
-  /* phones: equal 1rem gutters on both sides (the launcher sits 1rem from the right edge) */
+  /* phones: equal 1rem gutters on both sides */
   width: calc(100vw - 2rem);
-  max-height: calc(100dvh - env(safe-area-inset-bottom, 0px) - 5rem);
+  max-width: 22rem;
+  max-height: min(72vh, 480px, calc(100dvh - env(safe-area-inset-bottom, 0px) - 5rem));
   box-shadow:
     0 24px 48px -12px color-mix(in srgb, var(--color-primary) 18%, transparent),
     0 8px 16px -8px rgba(15, 23, 42, 0.12);
@@ -235,7 +236,7 @@ body {
   overflow-y: auto;
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
-  /* thin visible scrollbar so it is obvious when more options sit below (very short screens) */
+  /* thin visible scrollbar so it is obvious when more options sit below */
   scrollbar-width: thin;
   scrollbar-color: rgb(203 213 225) transparent;
 }
@@ -244,20 +245,28 @@ body {
 
 /* large phones / small tablets */
 @media (min-width: 480px) {
-  .chat-panel { width: 22rem; }
+  .chat-panel {
+    width: 22rem;
+    max-width: 22rem;
+  }
 }
 
 /* tablets, laptops, desktops (launcher sits 1.5rem from the edges) */
 @media (min-width: 640px) {
   .chat-panel {
     width: 23rem;
-    max-height: min(36rem, calc(100dvh - env(safe-area-inset-bottom, 0px) - 6.5rem));
+    max-width: 23rem;
+    max-height: min(34rem, 76vh, calc(100dvh - env(safe-area-inset-bottom, 0px) - 6.5rem));
   }
 }
 
 /* large desktops */
 @media (min-width: 1536px) {
-  .chat-panel { width: 24rem; }
+  .chat-panel {
+    width: 24rem;
+    max-width: 24rem;
+    max-height: min(36rem, 78vh);
+  }
 }
 
 .chat-panel--closed {

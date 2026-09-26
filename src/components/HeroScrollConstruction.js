@@ -276,7 +276,7 @@ export default function HeroScrollConstruction() {
         <div
           ref={textContentRef}
           style={{ opacity: 1 }}
-          className="pointer-events-auto absolute inset-0 z-10 flex flex-col justify-center px-4 sm:px-6 lg:px-8 transition-transform duration-100 ease-out"
+          className="pointer-events-auto absolute inset-0 z-10 flex flex-col justify-center pt-28 sm:pt-36 md:pt-40 lg:pt-48 2xl:pt-56 px-4 sm:px-6 lg:px-8 transition-transform duration-100 ease-out"
         >
           <div className="mx-auto w-full max-w-[92rem]">
             {/* Main Headline */}
