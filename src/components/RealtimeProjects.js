@@ -762,6 +762,8 @@ export default function RealtimeProjects() {
               return (
                 <button
                   key={loc.id}
+                  type="button"
+                  suppressHydrationWarning
                   onClick={() => {
                     setActiveLocation(loc.id);
                     carouselRef.current?.scrollTo({ left: 0 });
@@ -781,6 +783,8 @@ export default function RealtimeProjects() {
           {/* Cyan/Teal Carousel Arrows */}
           <div className="hidden sm:flex items-center gap-2.5 shrink-0 pb-1">
             <button
+              type="button"
+              suppressHydrationWarning
               onClick={scrollLeft}
               className="flex items-center justify-center text-[#008ba3] hover:text-[#005f70] transition-colors cursor-pointer p-1.5 rounded-full hover:bg-slate-100"
               aria-label="Scroll left"
@@ -788,6 +792,8 @@ export default function RealtimeProjects() {
               <ArrowLeft className="h-6 w-6 stroke-[2.5]" />
             </button>
             <button
+              type="button"
+              suppressHydrationWarning
               onClick={scrollRight}
               className="flex items-center justify-center text-[#008ba3] hover:text-[#005f70] transition-colors cursor-pointer p-1.5 rounded-full hover:bg-slate-100"
               aria-label="Scroll right"

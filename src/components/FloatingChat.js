@@ -222,6 +222,7 @@ export default function FloatingChat() {
           <div className="flex shrink-0 items-center gap-0.5">
             <button
               type="button"
+              suppressHydrationWarning
               onClick={minimize}
               aria-label="Minimize chat"
               className="flex h-7 w-7 items-center justify-center rounded-full text-white/75 transition-colors hover:bg-white/12 hover:text-white"
@@ -230,6 +231,7 @@ export default function FloatingChat() {
             </button>
             <button
               type="button"
+              suppressHydrationWarning
               onClick={close}
               aria-label="Close chat"
               className="flex h-7 w-7 items-center justify-center rounded-full text-white/75 transition-colors hover:bg-white/12 hover:text-white"
@@ -277,6 +279,7 @@ export default function FloatingChat() {
                     <div className="mt-3 pt-2.5 border-t border-emerald-200/60 flex flex-wrap items-center gap-2">
                       <button
                         type="button"
+                        suppressHydrationWarning
                         onClick={handleShowServices}
                         className="inline-flex items-center gap-1.5 rounded-lg bg-white/90 border border-emerald-300/80 px-2.5 py-1 text-[11px] font-semibold text-[#003a70] hover:border-[#ff8c00] hover:text-[#ff8c00] transition-colors shadow-2xs"
                       >
@@ -307,6 +310,7 @@ export default function FloatingChat() {
                           <li key={action.label}>
                             <button
                               type="button"
+                              suppressHydrationWarning
                               onClick={() => handleQuickAction(action)}
                               className={`group flex w-full items-center gap-2.5 rounded-xl border px-3 py-2 text-left transition-all ${
                                 action.highlight
@@ -349,6 +353,7 @@ export default function FloatingChat() {
                           <button
                             key={srv.id}
                             type="button"
+                            suppressHydrationWarning
                             onClick={() => handleSelectService(srv)}
                             className={`group flex items-center gap-2.5 p-2 sm:p-2.5 rounded-xl border text-left transition-all active:scale-[0.98] ${
                               isSelected
@@ -394,6 +399,7 @@ export default function FloatingChat() {
             <input
               ref={inputRef}
               type="text"
+              suppressHydrationWarning
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Type a message or select a service…"
@@ -402,6 +408,7 @@ export default function FloatingChat() {
             />
             <button
               type="submit"
+              suppressHydrationWarning
               disabled={!input.trim()}
               aria-label="Send message"
               className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-secondary text-white shadow-sm transition-colors hover:brightness-95 disabled:cursor-not-allowed disabled:opacity-40 sm:h-10 sm:w-10"
@@ -415,6 +422,7 @@ export default function FloatingChat() {
       {/* Trigger */}
       <button
         type="button"
+        suppressHydrationWarning
         onClick={toggle}
         aria-label={isOpen ? "Close chat" : "Open chat"}
         aria-expanded={isOpen}

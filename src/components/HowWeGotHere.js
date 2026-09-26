@@ -192,6 +192,8 @@ export default function HowWeGotHere() {
               return (
                 <button
                   key={item.year}
+                  type="button"
+                  suppressHydrationWarning
                   onClick={() => setActiveYear(item.year)}
                   onMouseEnter={() => setActiveYear(item.year)}
                   className={`relative text-right transition-all font-sans cursor-pointer group py-0.5 px-2 flex items-center justify-end ${

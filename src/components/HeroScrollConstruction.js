@@ -318,7 +318,7 @@ export default function HeroScrollConstruction() {
             {/* Trust Metrics Strip */}
             <div className="mt-6 sm:mt-8 w-fit max-w-full flex flex-wrap items-center gap-6 sm:gap-8 border-t border-white/15 pt-4 text-white/80">
               <div>
-                <div className="text-base sm:text-xl font-extrabold text-white font-sans">25+</div>
+                <div className="text-base sm:text-xl font-extrabold text-white font-sans">50+</div>
                 <div className="text-[9px] sm:text-[10px] text-white/70 uppercase tracking-wider font-sans">Years Experience</div>
               </div>
               <div className="h-6 w-px bg-white/15 hidden sm:block" />

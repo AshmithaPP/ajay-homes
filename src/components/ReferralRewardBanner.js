@@ -116,6 +116,7 @@ export default function ReferralRewardBanner() {
             <div className="mt-6 flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3 sm:gap-6">
               <button
                 type="button"
+                suppressHydrationWarning
                 onClick={openConsultation}
                 className="group inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-[#ff8c00] px-7 py-3 text-sm font-bold text-white shadow-md shadow-[#ff8c00]/30 transition-all hover:bg-[#e07b00] hover:shadow-[#ff8c00]/50"
               >

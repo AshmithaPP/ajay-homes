@@ -17,8 +17,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${montserrat.variable} h-full antialiased`}>
-      <body className="min-h-full bg-white text-slate-900 flex flex-col font-sans">
+    <html lang="en" suppressHydrationWarning className={`${montserrat.variable} h-full antialiased`}>
+      <body suppressHydrationWarning className="min-h-full bg-white text-slate-900 flex flex-col font-sans">
         {children}
         <FloatingChat />
       </body>

@@ -153,6 +153,8 @@ export default function Navbar() {
               onMouseLeave={handleMouseLeave}
             >
               <button
+                type="button"
+                suppressHydrationWarning
                 onClick={() => setServicesDropdownOpen(!servicesDropdownOpen)}
                 className={`whitespace-nowrap inline-flex items-center gap-1.5 rounded-full px-3.5 py-2 text-sm font-semibold transition-all ${
                   servicesDropdownOpen
@@ -245,6 +247,8 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <button
+            type="button"
+            suppressHydrationWarning
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-slate-300 bg-slate-50 text-slate-800 transition-colors hover:bg-slate-100 lg:hidden"
             aria-label="Toggle menu"
@@ -289,6 +293,7 @@ export default function Navbar() {
               <div>
                 <button
                   type="button"
+                  suppressHydrationWarning
                   onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
                   className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-[14px] font-bold text-slate-800 hover:text-[#ff8c00] hover:bg-slate-50 transition-colors"
                 >

@@ -47,12 +47,12 @@ const rightFeatures = [
 
 // Exactly 6 real project images: 3 fan out to the Left, 3 to the Right
 const projectImages = [
-  { id: "img-besant", title: "Besant Nagar Beach Villa", image: "/assets/img/img-004.jpeg", side: -1, row: -1 },
-  { id: "img-interior", title: "Luxury Interior Craft", image: "/assets/img/img-016.jpeg", side: -1, row: 0 },
-  { id: "img-ankan", title: "Ankan Contemporary Villa", image: "/assets/img/img-020.jpeg", side: -1, row: 1 },
-  { id: "img-suresh", title: "Suresh Landmark Estate", image: "/assets/img/img-028.jpeg", side: 1, row: -1 },
-  { id: "img-raman", title: "Raman Prestige Villa", image: "/assets/img/img-035.jpeg", side: 1, row: 0 },
-  { id: "img-shastri", title: "Shastri Nagar Residency", image: "/assets/img/img-048.jpeg", side: 1, row: 1 },
+  { id: "img-besant", title: "Besant Nagar", image: "/assets/img/img-004.jpeg", side: -1, row: -1 },
+  { id: "img-interior", title: "Luxury Interiors", image: "/assets/img/img-016.jpeg", side: -1, row: 0 },
+  { id: "img-ankan", title: "Ankan Villa", image: "/assets/img/img-020.jpeg", side: -1, row: 1 },
+  { id: "img-suresh", title: "Suresh Landmark", image: "/assets/img/img-028.jpeg", side: 1, row: -1 },
+  { id: "img-raman", title: "Raman Prestige", image: "/assets/img/img-035.jpeg", side: 1, row: 0 },
+  { id: "img-shastri", title: "Shastri Nagar", image: "/assets/img/img-048.jpeg", side: 1, row: 1 },
 ];
 
 // Height of the fixed navbar (running top bar + main bar) on desktop; the pinned stage sits just below it
@@ -173,20 +173,20 @@ export default function SignatureLivingShowcase() {
     centerH = Math.round(Math.max(200, Math.min(centerW * 1.42, vp.h - NAV_H - headerH - 136)));
     // On short laptop screens (e.g. 14" at 150% scaling) keep the card from turning wide and squat
     centerW = Math.min(centerW, Math.round(centerH / 1.2));
-    sideRatio = 0.62;
-    gapRatio = 0.09;
+    sideRatio = 0.65;
+    gapRatio = 0.08;
   } else {
     // Fan width ≈ 2.32 × centre width with these ratios; fit it inside the screen gutters
     const avail = Math.min(vp.w - 32, 900);
     centerW = Math.round(Math.min(300, avail / 2.32));
     centerH = Math.round(centerW * 1.42);
-    sideRatio = 0.56;
+    sideRatio = 0.58;
     gapRatio = 0.05;
   }
   const fanY = Math.round(centerH * 0.33);
   // Side photos shrink when needed so the stacked rows never overlap each other
-  const sideH = Math.round(Math.min(centerW * sideRatio * 0.64, fanY - 14));
-  const sideW = Math.round(sideH / 0.64);
+  const sideH = Math.round(Math.min(centerW * sideRatio * 0.64, fanY - 10));
+  const sideW = Math.round(sideH / 0.58);
   const sideGap = Math.round(centerW * gapRatio);
   const fanX = centerW / 2 + sideW / 2 + sideGap;
   const fanWidth = Math.round(2 * (fanX + sideGap + sideW / 2) + (isDesktop ? 24 : 0));
@@ -277,13 +277,15 @@ export default function SignatureLivingShowcase() {
                           className="object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                         <div
-                          className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent text-left ${
-                            compact ? "px-1 pb-0.5 pt-3" : "p-2 pt-5"
+                          className={`absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 via-black/55 to-transparent text-left pointer-events-none ${
+                            compact ? "px-1.5 pb-1 pt-3" : "px-2.5 pb-1.5 pt-5"
                           }`}
                         >
                           <p
-                            className={`font-bold text-white font-sans truncate drop-shadow-sm ${
-                              compact ? "text-[7px] leading-tight" : "text-[11px] 2xl:text-xs"
+                            className={`font-bold text-white font-sans leading-tight drop-shadow-[0_1px_3px_rgba(0,0,0,0.9)] ${
+                              compact
+                                ? "text-[8px] leading-tight"
+                                : "text-[11px] sm:text-[12px] 2xl:text-[13px] leading-tight"
                             }`}
                           >
                             {card.title}

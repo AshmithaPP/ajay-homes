@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import HeroScrollConstruction from "@/components/HeroScrollConstruction";
 import EverythingOnePlace from "@/components/EverythingOnePlace";
+import Spotlight from "@/components/Spotlight";
 import SignatureLivingShowcase from "@/components/SignatureLivingShowcase";
 import RealtimeProjects from "@/components/RealtimeProjects";
 import HowWeGotHere from "@/components/HowWeGotHere";
@@ -22,7 +23,10 @@ export default function Home() {
       {/* 2nd Section: Everything you Need at One Place */}
       <EverythingOnePlace />
 
-      {/* 3rd Section: Signature Living Showcase with Scroll-Driven Emergent Projects */}
+      {/* 3rd Section: Nike-Inspired Iconic Architectural Spotlight Showcase */}
+      <Spotlight />
+
+      {/* 4th Section: Signature Living Showcase with Scroll-Driven Emergent Projects */}
       <SignatureLivingShowcase />
 
       {/* Realtime Client Projects Showcase */}

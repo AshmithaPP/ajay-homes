@@ -118,6 +118,7 @@ export default function ConsultationPopup() {
         {/* Close */}
         <button
           type="button"
+          suppressHydrationWarning
           onClick={close}
           aria-label="Close"
           className="absolute right-3 top-3 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-slate-600 shadow-sm transition-colors hover:bg-slate-100 hover:text-slate-900"
@@ -174,6 +175,7 @@ export default function ConsultationPopup() {
               </p>
               <button
                 type="button"
+                suppressHydrationWarning
                 onClick={close}
                 className="mt-6 rounded-lg bg-primary px-6 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#002b54]"
               >
@@ -195,6 +197,7 @@ export default function ConsultationPopup() {
                     <button
                       key={type}
                       type="button"
+                      suppressHydrationWarning
                       onClick={() => update("propertyType", type)}
                       className={`rounded-md border px-3 py-1.5 text-xs font-medium transition-colors ${
                         active
@@ -212,6 +215,7 @@ export default function ConsultationPopup() {
               <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <div>
                   <select
+                    suppressHydrationWarning
                     value={form.service}
                     onChange={(e) => update("service", e.target.value)}
                     className={fieldClass(false)}
@@ -225,6 +229,7 @@ export default function ConsultationPopup() {
                 </div>
                 <div>
                   <select
+                    suppressHydrationWarning
                     value={form.location}
                     onChange={(e) => update("location", e.target.value)}
                     className={fieldClass(errors.location)}
@@ -242,6 +247,7 @@ export default function ConsultationPopup() {
               <div className="mt-3">
                 <input
                   type="text"
+                  suppressHydrationWarning
                   value={form.name}
                   onChange={(e) => update("name", e.target.value)}
                   placeholder="Name"
@@ -260,6 +266,7 @@ export default function ConsultationPopup() {
                   <span className="border-r border-slate-200 px-3 py-2.5 text-sm text-slate-600">+91</span>
                   <input
                     type="tel"
+                    suppressHydrationWarning
                     inputMode="numeric"
                     value={form.phone}
                     onChange={(e) => update("phone", e.target.value.replace(/\D/g, "").slice(0, 10))}
@@ -274,6 +281,7 @@ export default function ConsultationPopup() {
               <label className="mt-4 flex cursor-pointer items-center gap-2 text-xs text-slate-700">
                 <input
                   type="checkbox"
+                  suppressHydrationWarning
                   checked={form.whatsapp}
                   onChange={(e) => update("whatsapp", e.target.checked)}
                   className="h-4 w-4 accent-[#003a70]"
@@ -283,6 +291,7 @@ export default function ConsultationPopup() {
 
               <button
                 type="submit"
+                suppressHydrationWarning
                 className="mt-5 w-full rounded-lg bg-secondary py-3 text-sm font-bold text-white shadow-md shadow-orange-500/25 transition-colors hover:bg-[#e07b00]"
               >
                 Book a Free Consultation
